@@ -1,5 +1,0 @@
-package br.com.ieoafestasedecoracoes.partymanager.vendorservice.repository;
-
-public class UserRepository {
-
-}

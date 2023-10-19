@@ -1,1 +1,0 @@
-CREATE TABLE client_seq (next_value int);

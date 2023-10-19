@@ -1,16 +1,0 @@
-
-c
-java:S1128"0Remove this unused import 'java.util.ArrayList'.(÷‰îƒ8øÍâ¨1HïRMINORZ
-CODE_SMELL
-c
-java:S1128"+Remove this unused import 'java.util.List'.(Õë±Äøÿÿÿÿ8øÍâ¨1HñRMINORZ
-CODE_SMELL
-™
-java:S1128"aRemove this unused import 'br.com.ieoafestasedecoracoes.partymanager.companyservice.to.ClientTO'.(â¸æÂÿÿÿÿÿ8øÍâ¨1HóRMINORZ
-CODE_SMELL
-”
-java:S1128"aRemove this unused import 'br.com.ieoafestasedecoracoes.partymanager.companyservice.to.VendorTO'.(„‰˜å8øÍâ¨1HõRMINORZ
-CODE_SMELL
-r
-java:S1128":Remove this unused import 'jakarta.persistence.Transient'.(ÂÛÿØıÿÿÿÿ8øÍâ¨1H÷RMINORZ
-CODE_SMELL
