@@ -1,0 +1,45 @@
+package br.com.ieoafestasedecoracoes.partymanager.vendorservice.to;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+import br.com.ieoafestasedecoracoes.partymanager.vendorservice.domain.User;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class UserTO implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+
+	private int id;
+
+	private String firstName;
+	private String lastName;
+	private String email;
+	private String password;
+
+	public UserTO(User user) {
+		if (user != null) {
+			this.firstName = user.getFirstName();
+			this.lastName = user.getLastName();
+			this.email = user.getEmail();
+			this.password = user.getPassword();
+		}
+	}
+	
+	public static List<UserTO> fromUserList(List<User> userList) {
+		List<UserTO> listTO = new ArrayList<>();
+		
+		if(userList != null) {			
+			listTO = userList.stream().map(UserTO::new).toList();
+		}
+		
+		return listTO;
+	}
+
+}

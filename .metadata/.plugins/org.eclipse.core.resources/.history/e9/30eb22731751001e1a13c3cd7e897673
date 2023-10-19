@@ -1,0 +1,49 @@
+package br.com.ieoafestasedecoracoes.partymanager.companyservice.domain;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import br.com.ieoafestasedecoracoes.partymanager.companyservice.to.ClientTO;
+import br.com.ieoafestasedecoracoes.partymanager.companyservice.to.CompanyTO;
+import br.com.ieoafestasedecoracoes.partymanager.companyservice.to.VendorTO;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Transient;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@Entity
+@AllArgsConstructor
+@NoArgsConstructor
+public class Company {
+
+	@Id
+	@SequenceGenerator(name = "company_seq", allocationSize = 1)
+	private Integer id;
+
+	@Column(nullable = false)
+	private String name;
+
+	@Column(unique = true)
+	private String document;
+
+	@Transient
+	List<ClientTO> clients = new ArrayList<>();
+	
+	@Transient
+	List<VendorTO> vendors = new ArrayList<>();
+	
+	public Company(CompanyTO companyTO) {
+		if (companyTO != null) {
+			this.id = companyTO.getId();
+			this.name = companyTO.getName();
+			this.cnpj = companyTO.getCnpj();
+			this.clients = companyTO.getClients();
+		}
+	}
+
+}

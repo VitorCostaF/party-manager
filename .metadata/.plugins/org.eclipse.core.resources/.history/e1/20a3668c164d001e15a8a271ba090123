@@ -1,0 +1,34 @@
+package br.com.ieoafestasedecoracoes.partymanager.clientservice.domain;
+
+import br.com.ieoafestasedecoracoes.partymanager.clientservice.to.ClientTO;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity
+public class Client {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Integer id;
+
+	private String cpf;
+	private String firstName;
+	private String lastName;
+	
+	public Client(ClientTO clientTO) {
+		if(clientTO != null) {
+			this.cpf = clientTO.getCpf();
+			this.firstName = clientTO.getFirstName();
+			this.lastName = clientTO.getLastName();			
+		}
+	}
+
+}

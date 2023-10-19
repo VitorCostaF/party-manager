@@ -1,0 +1,68 @@
+package br.com.ieoafestasedecoracoes.partymanager.vendorservice.controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import br.com.ieoafestasedecoracoes.partymanager.usersservice.controller.service.UserService;
+import br.com.ieoafestasedecoracoes.partymanager.vendorservice.domain.User;
+import br.com.ieoafestasedecoracoes.partymanager.vendorservice.to.UserTO;
+
+@RestController
+@RequestMapping("users")
+public class UserController {
+
+	@Autowired
+	private UserService service;
+
+	@GetMapping
+	public ResponseEntity<List<UserTO>> allUsers() {
+		return ResponseEntity.ok(UserTO.fromUserList(service.findAll()));
+	}
+
+	@GetMapping("{id}")
+	public ResponseEntity<UserTO> findById(@PathVariable Integer id) {
+		return ResponseEntity.ok(new UserTO(service.findById(id)));
+	}
+
+	@DeleteMapping("{id}")
+	public ResponseEntity<Void> delete(@PathVariable Integer id) {
+		service.delete(id);
+		return ResponseEntity.noContent().build();
+	}
+
+	@PutMapping
+	public ResponseEntity<Void> update(@RequestBody UserTO userTO) {
+		service.update(new User(userTO));
+		return ResponseEntity.noContent().build();
+	}
+	
+	@PostMapping
+	public ResponseEntity<Void> create(@RequestBody UserTO userTO) {
+		service.create(new User(userTO));
+		return ResponseEntity.noContent().build();
+	}
+
+	@GetMapping("/first-name/{firstName}")
+	public ResponseEntity<UserTO> findByFirstName(@PathVariable String firstName) {
+		return ResponseEntity.ok(new UserTO(service.findByEmail(null)));
+	}
+	
+	
+	@GetMapping("/email/{email}")
+	public ResponseEntity<UserTO> findByEmail(@PathVariable String email) {
+		return ResponseEntity.ok(new UserTO(service.findByEmail(null)));
+	}
+	
+	
+
+}

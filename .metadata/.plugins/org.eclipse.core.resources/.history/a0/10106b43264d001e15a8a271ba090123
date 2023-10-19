@@ -1,0 +1,51 @@
+package br.com.ieoafestasedecoracoes.partymanager.vendorservice.service;
+
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
+import br.com.ieoafestasedecoracoes.partymanager.vendorservice.domain.Vendor;
+import br.com.ieoafestasedecoracoes.partymanager.vendorservice.repository.UserRepository;
+
+@Service
+public class UserService {
+
+	private UserRepository repository;
+
+	public List<Vendor> findAll() {
+		return repository.findAll();
+	}
+
+	public Vendor findById(Integer id) {
+		return repository.findById(id).orElse(null);
+	}
+
+	public void delete(Integer id) {
+		repository.deleteById(id);
+	}
+
+	public void update(Vendor user) {
+
+		Vendor userBD = findById(user.getId());
+		if (userBD == null) {
+			throw new RuntimeException("Usuário não existente para atualização");
+		}
+
+		repository.save(user);
+
+	}
+
+	public void create(Vendor user) {
+		user.setId(null);
+		repository.save(user);
+	}
+
+	public Vendor findByEmail(String firstName) {
+		return repository.findByEmail(firstName);
+	}
+
+	public Vendor findByFirstName(String firstName) {
+		return repository.findByFirstName(firstName);
+	}
+
+}

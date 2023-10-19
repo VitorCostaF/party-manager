@@ -1,0 +1,12 @@
+CREATE TABLE vendor (
+	id INT,
+	first_name VARCHAR(30),
+	last_name VARCHAR(100),
+	email VARCHAR(100),
+	password VARCHAR(100),
+	
+	PRIMARY KEY (id)
+);
+
+CREATE TABLE vendor_seq (next_val INT);
+INSERT INTO vendor_seq VALUES ( 1 );

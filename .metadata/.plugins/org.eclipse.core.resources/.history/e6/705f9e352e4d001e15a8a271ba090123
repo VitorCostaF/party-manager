@@ -1,0 +1,32 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>br.com.ieoafestasedecoracoes.partymanager.services</groupId>
+	<artifactId>flyway-migrator</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>flyway-migrator</name>
+	<description>Flyway Migrator</description>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.flywaydb</groupId>
+				<artifactId>flyway-maven-plugin</artifactId>
+				<version>9.22.0</version>
+				<configuration>
+					<user>devuser</user>
+					<password>Devdb_123</password>
+					<url>jdbc:mysql://127.0.0.1:3306</url>
+					<schemas>
+				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>com.mysql</groupId>
+						<artifactId>mysql-connector-j</artifactId>
+						<version>8.1.0</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+		</plugins>
+	</build>
+</project>

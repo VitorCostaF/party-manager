@@ -1,0 +1,13 @@
+CREATE TABLE client (
+	id INT,
+	document VARCHAR(30) unique,
+	first_name VARCHAR(30),
+	last_name VARCHAR(100),
+	email VARCHAR(100),
+	password VARCHAR(100),
+	
+	PRIMARY KEY (id)
+);
+
+CREATE TABLE client_seq (next_val INT);
+INSERT INTO client_seq VALUES ( 1 );

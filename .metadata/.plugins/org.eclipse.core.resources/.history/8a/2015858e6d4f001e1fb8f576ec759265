@@ -1,0 +1,38 @@
+package br.com.ieoafestasedecoracoes.partymanager.clientservice.to;
+
+import java.util.List;
+
+import br.com.ieoafestasedecoracoes.partymanager.clientservice.domain.Client;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+
+public class ClientTO {
+
+	private final Integer id;
+	private final String document;
+	private final String firstName;
+	private final String lastName;
+	private final String tipo;
+	private final String email;
+	private final String password;
+	
+	public ClientTO(Client client) {
+		if(client != null) {			
+			this.id = client.getId();
+			this.document = client.getDocument();
+			this.firstName = client.getFirstName();
+			this.lastName = client.getLastName();	
+			this.tipo = client.getTipo();
+			this.email = client.getEmail();	
+			this.password = client.getPassword();
+		}
+	}
+	
+	public static List<ClientTO> fromClientList(List<Client> list) {
+		return list.stream().map(ClientTO::new).toList();
+	}
+}

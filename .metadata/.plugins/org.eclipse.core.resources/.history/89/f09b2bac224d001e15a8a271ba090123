@@ -1,0 +1,5 @@
+package br.com.ieoafestasedecoracoes.partymanager.companyservice.to;
+
+public class CompanyTO {
+
+}

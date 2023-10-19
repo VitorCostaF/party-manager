@@ -1,0 +1,51 @@
+package br.com.ieoafestasedecoracoes.partymanager.vendorservice.to;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
+
+import br.com.ieoafestasedecoracoes.partymanager.vendorservice.domain.Vendor;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@JsonNaming( value = PropertyNamingStrategies.KebabCaseStrategy.class )
+public class VendorTO implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+
+	private int id;
+
+	private String firstName;
+	private String lastName;
+	private String email;
+	private String password;
+
+	public VendorTO(Vendor user) {
+		if (user != null) {
+			this.id = user.getId();
+			this.firstName = user.getFirstName();
+			this.lastName = user.getLastName();
+			this.email = user.getEmail();
+			this.password = user.getPassword();
+		}
+	}
+	
+	public static List<VendorTO> fromUserList(List<Vendor> userList) {
+		List<VendorTO> listTO = new ArrayList<>();
+		
+		if(userList != null) {			
+			listTO = userList.stream().map(VendorTO::new).toList();
+		}
+		
+		return listTO;
+	}
+
+}

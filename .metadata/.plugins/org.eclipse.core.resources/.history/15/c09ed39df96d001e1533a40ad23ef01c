@@ -1,0 +1,14 @@
+package br.com.ieoafestasedecoracoes.partymanager.clientservice;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import br.com.ieoafestasedecoracoes.partymanager.clientservice.domain.Client;
+import java.util.List;
+
+
+public interface ClientRepository extends JpaRepository<Client, Integer>{
+
+	List<Client> findByFirstName(String firstName);
+	
+	Client findByEmail(String email);
+}

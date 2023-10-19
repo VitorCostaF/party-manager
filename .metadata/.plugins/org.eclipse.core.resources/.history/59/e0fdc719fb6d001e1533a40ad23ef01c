@@ -1,0 +1,16 @@
+package br.com.ieoafestasedecoracoes.partymanager.to;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
+@Data
+@AllArgsConstructor
+public class VendorTO {
+
+	private Integer id;
+	private String firstName;
+	private String lastName;
+	private String email;
+	private String password;
+	
+}

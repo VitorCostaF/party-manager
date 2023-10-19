@@ -1,0 +1,29 @@
+package br.com.ieoafestasedecoracoes.partymanager.vendorservice.service;
+
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
+import br.com.ieoafestasedecoracoes.partymanager.vendorservice.domain.User;
+import br.com.ieoafestasedecoracoes.partymanager.vendorservice.repository.UserRepository;
+
+@Service
+public class UserService {
+	
+	private UserRepository repository; 
+
+	public List<User> findAll() {
+		return repository.findAll();
+	}
+
+	public User findById(Integer id) {
+		return repository.findById(id).orElse(null);
+	}
+
+	public void delete(Integer id) {
+		repository.deleteById(id);		
+	}
+
+	
+	
+}

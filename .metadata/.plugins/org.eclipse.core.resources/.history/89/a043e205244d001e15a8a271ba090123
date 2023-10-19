@@ -1,0 +1,5 @@
+package br.com.ieoafestasedecoracoes.partymanager.vendorservice.service;
+
+public class UserService {
+
+}
