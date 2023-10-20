@@ -3,6 +3,7 @@ package br.com.ieoafestasedecoracoes.partymanager.to;
 import java.util.List;
 
 import br.com.ieoafestasedecoracoes.partymanager.domain.Client;
+import br.com.ieoafestasedecoracoes.partymanager.domain.ClientType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -14,7 +15,7 @@ public class ClientTO {
 	private String document;
 	private String firstName;
 	private String lastName;
-	private String type;
+	private ClientType type;
 	private String email;
 	private String password;
 	

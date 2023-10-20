@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: party-manager-main
+    
+  datasource:
+    name: jdbc:mysql://localhost:3306/party-manager-services-test
+    username: devuser
+    password: Devdb_123
+    
+  jpa:
+    show-sql: true
+    
+  flyway:
+    url: jdbc:mysql://localhost:3306/party-manager-services-test
+    user: devuser
+    password: Devdb_123
+    enabled: true
+    
+  jackson:
+    property-naming-strategy: KEBAB_CASE
+    
+server:
+  port: 8081

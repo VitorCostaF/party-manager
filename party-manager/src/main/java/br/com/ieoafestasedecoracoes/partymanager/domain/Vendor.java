@@ -23,8 +23,10 @@ public class Vendor {
 	@GeneratedValue(generator = "vendor_seq")
 	private Integer id;
 
-	@Column(nullable = false)
+	@Column(name = "first_name", nullable = false)
 	private String firstName;
+	
+	@Column(name = "last_name")
 	private String lastName;
 	
 	@Column(nullable = false, unique = true)
