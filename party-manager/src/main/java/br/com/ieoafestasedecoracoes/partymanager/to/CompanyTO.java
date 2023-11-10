@@ -21,8 +21,6 @@ public class CompanyTO {
 	private String name;
 	private String document;
 	
-	List<ClientTO> clients = new ArrayList<>();
-	
 	List<VendorTO> vendors = new ArrayList<>();
 	
 	public CompanyTO(Company company) {

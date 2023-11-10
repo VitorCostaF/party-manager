@@ -30,7 +30,7 @@ public class ClientTO {
 			this.password = client.getPassword();
 		}
 	}
-	
+
 	public static List<ClientTO> fromClientList(List<Client> list) {
 		return list.stream().map(ClientTO::new).toList();
 	}

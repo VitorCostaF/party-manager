@@ -17,7 +17,7 @@ import br.com.ieoafestasedecoracoes.partymanager.service.CompanyService;
 import br.com.ieoafestasedecoracoes.partymanager.to.CompanyTO;
 
 @RestController
-@RequestMapping("company")
+@RequestMapping("companies")
 public class CompanyController {
 
 	@Autowired
@@ -29,6 +29,7 @@ public class CompanyController {
 	}
 
 	@GetMapping("{id}")
+	
 	public ResponseEntity<CompanyTO> findById(@PathVariable Integer id) {
 		return ResponseEntity.ok(service.findById(id));
 	}
@@ -49,7 +50,7 @@ public class CompanyController {
 		return ResponseEntity.ok(service.create(companyTO));
 	}
 	
-	@GetMapping("{name}")
+	@GetMapping("name/{name}")
 	public ResponseEntity<List<CompanyTO>> findByName(@PathVariable String name) {
 		return ResponseEntity.ok(service.findByName(name));
 	}
