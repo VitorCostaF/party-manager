@@ -18,10 +18,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
+@Data
 public class Company {
 
 	@Id
@@ -47,6 +47,9 @@ public class Company {
 			@JoinColumn(name = "client_id", referencedColumnName = "id")
 	)
 	private List<Client> clients = new ArrayList<>();
+	
+	@OneToMany
+	private List<Material> materials;
 
 	public Company(CompanyTO companyTO) {
 		if (companyTO != null) {

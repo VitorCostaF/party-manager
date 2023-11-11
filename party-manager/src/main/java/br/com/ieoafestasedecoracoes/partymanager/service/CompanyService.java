@@ -29,7 +29,6 @@ public class CompanyService {
 
 	public CompanyTO create(CompanyTO companyTO) {
 		Company company = new Company(companyTO);
-		company.setId(null);
 		repository.save(company);
 		companyTO.setId(company.getId());
 		return companyTO;

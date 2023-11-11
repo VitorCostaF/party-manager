@@ -7,8 +7,8 @@ import java.util.List;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -31,7 +31,7 @@ public class Party {
 	@ManyToOne
 	private Address address;
 	
-	@ManyToMany
-	private List<Material> materials = new ArrayList<>();
+	@OneToMany
+	private List<PartyMaterial> partyMaterials = new ArrayList<>();
 	
 }

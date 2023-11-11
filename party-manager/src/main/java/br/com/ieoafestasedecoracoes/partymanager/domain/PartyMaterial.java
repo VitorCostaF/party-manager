@@ -9,12 +9,12 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
 @NoArgsConstructor
-@Getter
+@Data
 public class PartyMaterial {
 
 	@Id
@@ -32,11 +32,11 @@ public class PartyMaterial {
 	private LocalDate endRentDate;
 	
 	@ManyToOne
-	@JoinColumn(nullable = false)
+	@JoinColumn(name = "material_id", referencedColumnName = "id")
 	private Material material;
 	
 	@ManyToOne
-	@JoinColumn(nullable = false)
+	@JoinColumn(name = "party_id", referencedColumnName = "id")
 	private Party party;
 	
 	

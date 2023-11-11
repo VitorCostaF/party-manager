@@ -13,14 +13,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Data
 public class Vendor {
 
 	@Id
-	@SequenceGenerator(name = "vendor_seq", allocationSize = 1)
 	@GeneratedValue(generator = "vendor_seq")
+	@SequenceGenerator(name = "vendor_seq", allocationSize = 1)
 	private Integer id;
 
 	@Column(name = "first_name", nullable = false)
