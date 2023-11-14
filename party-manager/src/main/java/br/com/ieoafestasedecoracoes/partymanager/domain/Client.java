@@ -1,5 +1,6 @@
 package br.com.ieoafestasedecoracoes.partymanager.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import br.com.ieoafestasedecoracoes.partymanager.to.ClientTO;
@@ -10,6 +11,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -45,7 +47,10 @@ public class Client {
 	private String password;
 	
 	@ManyToMany(mappedBy = "clients")
-	private List<Company> companies; 
+	private List<Company> companies = new ArrayList<>(); 
+	
+	@OneToMany
+	private List<Party> parties;
 	
 	public Client(ClientTO clientTO) {
 		if (clientTO != null) {

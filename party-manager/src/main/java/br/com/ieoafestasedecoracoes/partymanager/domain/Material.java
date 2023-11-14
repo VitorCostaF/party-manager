@@ -38,5 +38,4 @@ public class Material {
 	@ManyToOne
 	private Company companies;
 	
-	
 }
