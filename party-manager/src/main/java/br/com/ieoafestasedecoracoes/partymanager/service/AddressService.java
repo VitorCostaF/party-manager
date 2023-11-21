@@ -37,8 +37,9 @@ public class AddressService {
 
 	public AddressTO create(AddressTO addressTO) {
 		Address address = mapper.map(addressTO, Address.class);
+		address.setId(null);
 		repository.save(address);
-		return addressTO;
+		return mapper.map(address, AddressTO.class);
 	}
 
 	public AddressTO update(Integer id, AddressTO addressTO) {
