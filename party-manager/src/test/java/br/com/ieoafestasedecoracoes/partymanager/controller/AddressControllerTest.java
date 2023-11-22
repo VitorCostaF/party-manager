@@ -45,10 +45,12 @@ class AddressControllerTest {
 	
 	private ObjectMapper mapper;
 	
-	AddressTO addressById;
-	AddressTO address2;
+	private AddressTO addressById;
+	private AddressTO address1;
+	private AddressTO addressToDelete;
 	
 	String addressByIdJson;
+
 	
 	@BeforeAll
 	void setup() throws Exception {
@@ -96,6 +98,38 @@ class AddressControllerTest {
 		
 	}
 	
+	@Test
+	void shouldDeleteById() throws Exception {
+		mockMvc
+			.perform(
+				delete("/address/{id}", addressToDelete.getId()))
+			.andExpect(status().isNoContent());
+		
+		 mockMvc
+			.perform(
+				get("/address/{id}", addressToDelete.getId()))
+			.andExpect(content().json("{}"));
+	}
+	
+	@Test
+	void shouldCreateAnAddress() throws Exception {
+		
+		AddressTO addressToCreate = new AddressTO(1, "Street Address Created", "City Address Created", "1234",
+				"Complement Address Created");
+		
+		JsonNode addressToCreateJson = mapper.valueToTree(addressToCreate);
+		((ObjectNode)addressToCreateJson).remove("id");
+		
+		 mockMvc
+			.perform(
+				post("/address")
+					.content(addressToCreateJson.toString())
+					.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(
+					content()
+						.json(addressToCreateJson.toString(), false));
+	}
+	
 	private void deleteAllAddresses() throws Exception {
 		
 		String addressesToDeleteStr =  mockMvc
@@ -119,36 +153,33 @@ class AddressControllerTest {
 	private void createAddresses() throws Exception {
 		
 		addressById = new AddressTO(1, "By Id Street", "By Id City", "123456", "Complement By Id");
-		address2 = new AddressTO(2, "Street 2", "City 2", "123456", "Complement 2"); 
+		address1 = new AddressTO(1, "Street 1", "City 1", "123456", "Complement 1");
+		addressToDelete = new AddressTO(1, "Street To Delete", "City To Delete", "404", "Complement To Delete");
+				
+		createAddress(addressById, mapper);
+		createAddress(address1, mapper);
+		createAddress(addressToDelete, mapper);
 		
 		addressByIdJson = mapper.writeValueAsString(addressById);
-		String address2JsonStr = mapper.writeValueAsString(address2);
+		addressByIdJson = ((ObjectNode) mapper.readTree(addressByIdJson)).put("id", addressById.getId()).toString();
 		
-		String responseById = mockMvc
-				.perform(
-					post("/address")
-						.content(addressByIdJson))
-					.andReturn()
-						.getResponse()
-						.getContentAsString();
+	}
+	
+	private void createAddress(AddressTO address, ObjectMapper mapper) throws UnsupportedEncodingException, Exception {
 		
-		Integer idById = mapper.readValue(responseById, JsonNode.class).get("id").asInt();
+		String addressJsonStr = mapper.writeValueAsString(address);
 		
-		addressByIdJson = ((ObjectNode) mapper.readTree(addressByIdJson)).put("id", idById).toString();
+		String response =  mockMvc
+		.perform(
+			post("/address")
+				.content(addressJsonStr))
+			.andReturn()
+				.getResponse()
+				.getContentAsString();
 		
-		addressById.setId(idById);
-		
-		String response2 = mockMvc
-				.perform(
-					post("/address")
-						.content(address2JsonStr))
-					.andReturn()
-						.getResponse()
-						.getContentAsString();
-		
-		Integer id2 = mapper.readValue(response2, JsonNode.class).get("id").asInt();
-		address2.setId(id2);
-		
+		Integer id = mapper.readValue(response, JsonNode.class).get("id").asInt();
+		address.setId(id);
+		 
 	}
 
 }
