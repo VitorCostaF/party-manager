@@ -45,7 +45,7 @@ public class AddressService {
 	public AddressTO update(Integer id, AddressTO addressTO) {
 		Address address = repository.findById(id).orElse(null);
 		if (address == null) {
-			throw new RuntimeException("Company does not exist to be updated");
+			throw new RuntimeException("Address does not exist to be updated");
 		}
 		
 		mapper.map(addressTO, address);

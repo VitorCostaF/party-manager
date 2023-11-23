@@ -4,12 +4,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -29,6 +31,7 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import br.com.ieoafestasedecoracoes.partymanager.to.AddressTO;
+import jakarta.servlet.ServletException;
 import lombok.extern.log4j.Log4j2;
 
 @SpringBootTest
@@ -48,9 +51,9 @@ class AddressControllerTest {
 	private AddressTO addressById;
 	private AddressTO address1;
 	private AddressTO addressToDelete;
+	private AddressTO addressToUpdate;
 	
 	String addressByIdJson;
-
 	
 	@BeforeAll
 	void setup() throws Exception {
@@ -130,6 +133,34 @@ class AddressControllerTest {
 						.json(addressToCreateJson.toString(), false));
 	}
 	
+	@Test
+	void shouldUpdateAddress() throws Exception {
+		
+		AddressTO addressUpdated = new AddressTO(addressToUpdate.getId(), "Street Updated", "City Updated", "200", "Complement Updated");
+		String addressUpdatedJson = mapper.writeValueAsString(addressUpdated); 
+		
+		mockMvc
+			.perform(
+				put("/address/{id}", addressToUpdate.getId())
+				.content(addressUpdatedJson)
+				.contentType(MediaType.APPLICATION_JSON))
+			.andExpect(content().json(addressUpdatedJson));
+	}
+	
+//	TODO implementar o retorno correto quando for tratada a excessão
+	@Test()
+	void shouldNotupdateAnInexistentAddress() throws Exception {
+		
+		String addressUpdatedJson = mapper.writeValueAsString(addressToUpdate);
+		
+		Assertions.assertThrows(ServletException.class, () -> 
+			mockMvc
+				.perform(
+					put("/address/{id}", -1)
+						.content(addressUpdatedJson)
+						.contentType(MediaType.APPLICATION_JSON)));
+	}
+	
 	private void deleteAllAddresses() throws Exception {
 		
 		String addressesToDeleteStr =  mockMvc
@@ -155,10 +186,12 @@ class AddressControllerTest {
 		addressById = new AddressTO(1, "By Id Street", "By Id City", "123456", "Complement By Id");
 		address1 = new AddressTO(1, "Street 1", "City 1", "123456", "Complement 1");
 		addressToDelete = new AddressTO(1, "Street To Delete", "City To Delete", "404", "Complement To Delete");
+		addressToUpdate = new AddressTO(1, "Street To Update", "City To Update", "200", "Complement To Update");
 				
 		createAddress(addressById, mapper);
 		createAddress(address1, mapper);
 		createAddress(addressToDelete, mapper);
+		createAddress(addressToUpdate, mapper);
 		
 		addressByIdJson = mapper.writeValueAsString(addressById);
 		addressByIdJson = ((ObjectNode) mapper.readTree(addressByIdJson)).put("id", addressById.getId()).toString();
