@@ -187,13 +187,14 @@ class AddressControllerTest {
 		address1 = new AddressTO(1, "Street 1", "City 1", "123456", "Complement 1");
 		addressToDelete = new AddressTO(1, "Street To Delete", "City To Delete", "404", "Complement To Delete");
 		addressToUpdate = new AddressTO(1, "Street To Update", "City To Update", "200", "Complement To Update");
+		
+		addressByIdJson = mapper.writeValueAsString(addressById);
 				
 		createAddress(addressById, mapper);
 		createAddress(address1, mapper);
 		createAddress(addressToDelete, mapper);
 		createAddress(addressToUpdate, mapper);
 		
-		addressByIdJson = mapper.writeValueAsString(addressById);
 		addressByIdJson = ((ObjectNode) mapper.readTree(addressByIdJson)).put("id", addressById.getId()).toString();
 		
 	}

@@ -6,7 +6,6 @@ import java.util.List;
 import br.com.ieoafestasedecoracoes.partymanager.to.CompanyTO;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
@@ -16,12 +15,14 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
+@EqualsAndHashCode(of = "id", callSuper = false)
 public class Company {
 
 	@Id
@@ -35,10 +36,10 @@ public class Company {
 	@Column(nullable = false, unique = true)
 	private String document;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "company")
+	@OneToMany(mappedBy = "company")
 	private List<Vendor> vendors = new ArrayList<>();
 	
-	@ManyToMany(fetch = FetchType.LAZY)
+	@ManyToMany
 	@JoinTable(
 		name = "company_client",
 		joinColumns = 
@@ -48,7 +49,7 @@ public class Company {
 	)
 	private List<Client> clients = new ArrayList<>();
 	
-	@OneToMany
+	@OneToMany(mappedBy = "company")
 	private List<Material> materials;
 
 	public Company(CompanyTO companyTO) {

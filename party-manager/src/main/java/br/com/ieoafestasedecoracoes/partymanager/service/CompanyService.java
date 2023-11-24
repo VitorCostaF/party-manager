@@ -2,6 +2,7 @@ package br.com.ieoafestasedecoracoes.partymanager.service;
 
 import java.util.List;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,13 +15,20 @@ public class CompanyService {
 
 	@Autowired
 	private CompanyRepository repository;
+	
+	@Autowired
+	private ModelMapper mapper;
 
 	public CompanyTO findById(Integer id) {
-		return new CompanyTO(repository.findById(id).orElse(null));
+		Company company = repository.findById(id).orElse(null);
+		if(company != null) {
+			return mapper.map(company, CompanyTO.class);
+		}
+		return new CompanyTO();
 	}
 
 	public List<CompanyTO> findAll() {
-		return CompanyTO.fromCompanyList(repository.findAll());
+		return repository.findAll().stream().map(c -> mapper.map(c, CompanyTO.class)).toList();
 	}
 
 	public void delete(Integer id) {
@@ -29,9 +37,9 @@ public class CompanyService {
 
 	public CompanyTO create(CompanyTO companyTO) {
 		Company company = new Company(companyTO);
+		company.setId(null);
 		repository.save(company);
-		companyTO.setId(company.getId());
-		return companyTO;
+		return mapper.map(company, CompanyTO.class);
 	}
 
 	public CompanyTO update(Integer id, CompanyTO companyTO) {
@@ -43,12 +51,11 @@ public class CompanyService {
 		company.setName(companyTO.getName());
 		company.setDocument(companyTO.getDocument());
 
-		return new CompanyTO(repository.save(company));
+		return mapper.map(repository.save(company), CompanyTO.class);
 	}
 
 	public List<CompanyTO> findByName(String name) {
-		return repository.findByName(name);
-
+		return repository.findByNameLike(name);
 	}
 
 }

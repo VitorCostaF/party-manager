@@ -36,6 +36,6 @@ public class Material {
 	private List<PartyMaterial> partyMaterials = new ArrayList<>();
 	
 	@ManyToOne
-	private Company companies;
+	private Company company;
 	
 }

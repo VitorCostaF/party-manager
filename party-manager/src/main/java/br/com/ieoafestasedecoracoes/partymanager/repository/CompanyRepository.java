@@ -9,6 +9,6 @@ import br.com.ieoafestasedecoracoes.partymanager.to.CompanyTO;
 
 public interface CompanyRepository extends JpaRepository<Company, Integer>{
 
-	List<CompanyTO> findByName(String name);
+	List<CompanyTO> findByNameLike(String name);
 
 }
