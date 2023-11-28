@@ -45,6 +45,7 @@ public class CompanyController {
 		return ResponseEntity.ok(service.update(id, companyTO));
 	}
 	
+	// TODO retornar created e criar a url
 	@PostMapping
 	public ResponseEntity<CompanyTO> create(@RequestBody CompanyTO companyTO) {
 		return ResponseEntity.ok(service.create(companyTO));

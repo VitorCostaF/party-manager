@@ -11,6 +11,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -32,6 +33,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import br.com.ieoafestasedecoracoes.partymanager.to.CompanyTO;
 import br.com.ieoafestasedecoracoes.partymanager.util.RequestUtil;
+import jakarta.servlet.ServletException;
 
 @SpringBootTest
 @TestInstance(Lifecycle.PER_CLASS)
@@ -95,9 +97,9 @@ class CompanyControllerTest {
 			.perform(
 				get(PATH_ID, companyToDelete.getId()))
 			.andExpect(content().json("{}"));
-		
 	}
 	
+	// TODO testar o status created
 	@Test
 	void shouldCreate() throws Exception {
 		CompanyTO companyToCreate = new CompanyTO(1, "Company To Create", "1234567");
@@ -109,8 +111,21 @@ class CompanyControllerTest {
 				post(PATH)
 					.contentType(MediaType.APPLICATION_JSON)
 					.content(companyToCreateJson))
-			.andExpect(
-				content().json(companyToCreateJson, false));
+			.andExpect(content().json(companyToCreateJson, false));
+	}
+	
+//	TODO implementar o retorno correto quando for tratada a excessão
+	@Test()
+	void shouldNotupdateAnInexistentCompany() throws Exception {
+		
+		String companyUpdatedJson = mapper.writeValueAsString(companyToUpdate);
+		
+		Assertions.assertThrows(ServletException.class, () -> 
+			mockMvc
+				.perform(
+					put(PATH_ID, -1)
+						.content(companyUpdatedJson)
+						.contentType(MediaType.APPLICATION_JSON)));
 	}
 	
 	@Test
@@ -139,7 +154,8 @@ class CompanyControllerTest {
 		mockMvc
 			.perform(
 				get(PATH + "/name/{name}", companyName))
-			.andExpect(content().json(companiesFiltered, false));
+			.andExpect(
+				content().json(companiesFiltered, false));
 	}
 	
 	@Test
@@ -164,17 +180,16 @@ class CompanyControllerTest {
 	
 	private String findAllCompanies() throws UnsupportedEncodingException, Exception {
 		return mockMvc
-				.perform(
-						get(PATH))
-				.andReturn()
+			.perform(get(PATH))
+			.andReturn()
 				.getResponse()
-				.getContentAsString();
+					.getContentAsString();
+		
 	}
 	
 	private void deleteCompanies() throws UnsupportedEncodingException, Exception {
 		RequestUtil.deleteAllEntities(mockMvc, PATH, PATH, mapper);
 	}
-	
 	
 	private void createCompanies() throws UnsupportedEncodingException, Exception {
 		companyById = new CompanyTO(1, "Company By id", "1234");

@@ -120,10 +120,10 @@ class AddressControllerTest {
 		AddressTO addressToCreate = new AddressTO(1, "Street Address Created", "City Address Created", "1234",
 				"Complement Address Created");
 		
-		JsonNode addressToCreateJson = mapper.valueToTree(addressToCreate);
-		((ObjectNode)addressToCreateJson).remove("id");
+		addressToCreate.setId(null);
 		
-		 mockMvc
+		JsonNode addressToCreateJson = mapper.valueToTree(addressToCreate);		
+		mockMvc
 			.perform(
 				post("/address")
 					.content(addressToCreateJson.toString())
