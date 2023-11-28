@@ -6,6 +6,7 @@ import java.util.List;
 import br.com.ieoafestasedecoracoes.partymanager.to.CompanyTO;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
@@ -39,7 +40,7 @@ public class Company {
 	@OneToMany(mappedBy = "company")
 	private List<Vendor> vendors = new ArrayList<>();
 	
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(
 		name = "company_client",
 		joinColumns = 

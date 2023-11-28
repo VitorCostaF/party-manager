@@ -55,7 +55,8 @@ public class CompanyService {
 	}
 
 	public List<CompanyTO> findByName(String name) {
-		return repository.findByNameLike(name);
+		return repository.findByNameContains(name).stream().map(company -> mapper.map(company, CompanyTO.class))
+				.toList();
 	}
 
 }
