@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @JsonInclude(value = Include.NON_NULL)
-public class CompanyTO extends DomainObjectTO {
+public class CompanyTO implements DomainObjectInteface {
 
 	private Integer id;
 	private String name;

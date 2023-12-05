@@ -53,14 +53,17 @@ class AddressControllerTest {
 	private AddressTO addressToDelete;
 	private AddressTO addressToUpdate;
 	
-	String addressByIdJson;
+	private String addressByIdJson;
+	
+	private String PATH = "/address";
+	private String PATH_ID = PATH + "/{id}";
 	
 	@BeforeAll
 	void setup() throws Exception {
 		
 		this.mockMvc = MockMvcBuilders.webAppContextSetup(applicationContext)
 				.defaultRequest(
-					post("/address")
+					post(PATH)
 					.contentType(MediaType.APPLICATION_JSON))
 			.build();
 		
@@ -73,7 +76,7 @@ class AddressControllerTest {
 	
 	@Test
 	void findAllShouldReturnOk() throws Exception {
-		mockMvc.perform(get("/address")).andExpect(status().isOk());
+		mockMvc.perform(get(PATH)).andExpect(status().isOk());
 	}
 	
 	@Test
@@ -81,7 +84,7 @@ class AddressControllerTest {
 		
 		String responseJson = mockMvc
 			.perform(
-				get("/address"))
+				get(PATH))
 			.andReturn()
 				.getResponse()
 				.getContentAsString();
@@ -96,7 +99,7 @@ class AddressControllerTest {
 		
 		mockMvc
 			.perform(
-				get("/address/{id}", addressById.getId()))
+				get(PATH_ID, addressById.getId()))
 			.andExpect(content().json(addressByIdJson));
 		
 	}
@@ -105,12 +108,12 @@ class AddressControllerTest {
 	void shouldDeleteById() throws Exception {
 		mockMvc
 			.perform(
-				delete("/address/{id}", addressToDelete.getId()))
+				delete(PATH_ID, addressToDelete.getId()))
 			.andExpect(status().isNoContent());
 		
 		 mockMvc
 			.perform(
-				get("/address/{id}", addressToDelete.getId()))
+				get(PATH_ID, addressToDelete.getId()))
 			.andExpect(content().json("{}"));
 	}
 	
@@ -125,7 +128,7 @@ class AddressControllerTest {
 		JsonNode addressToCreateJson = mapper.valueToTree(addressToCreate);		
 		mockMvc
 			.perform(
-				post("/address")
+				post(PATH)
 					.content(addressToCreateJson.toString())
 					.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(
@@ -141,7 +144,7 @@ class AddressControllerTest {
 		
 		mockMvc
 			.perform(
-				put("/address/{id}", addressToUpdate.getId())
+				put(PATH_ID, addressToUpdate.getId())
 				.content(addressUpdatedJson)
 				.contentType(MediaType.APPLICATION_JSON))
 			.andExpect(content().json(addressUpdatedJson));
@@ -156,7 +159,7 @@ class AddressControllerTest {
 		Assertions.assertThrows(ServletException.class, () -> 
 			mockMvc
 				.perform(
-					put("/address/{id}", -1)
+					put(PATH_ID, -1)
 						.content(addressUpdatedJson)
 						.contentType(MediaType.APPLICATION_JSON)));
 	}
@@ -165,7 +168,7 @@ class AddressControllerTest {
 		
 		String addressesToDeleteStr =  mockMvc
 			.perform(
-				get("/address"))
+				get(PATH))
 			.andReturn()
 				.getResponse().getContentAsString();
 		
@@ -173,7 +176,7 @@ class AddressControllerTest {
 		
 		addressesToDelete.forEach(a -> {
 			try {
-				mockMvc.perform(delete("/address/{id}",a.getId()));
+				mockMvc.perform(delete(PATH_ID,a.getId()));
 			} catch (Exception e) {
 				log.info("problema ao deleter address {}", a.getId(), e);
 			}
@@ -205,7 +208,7 @@ class AddressControllerTest {
 		
 		String response =  mockMvc
 		.perform(
-			post("/address")
+			post(PATH)
 				.content(addressJsonStr))
 			.andReturn()
 				.getResponse()

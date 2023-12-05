@@ -17,7 +17,7 @@ import br.com.ieoafestasedecoracoes.partymanager.service.AddressService;
 import br.com.ieoafestasedecoracoes.partymanager.to.AddressTO;
 
 @RestController
-@RequestMapping("address")
+@RequestMapping("addresses")
 public class AddressController {
 
 	@Autowired

@@ -1,23 +1,25 @@
 package br.com.ieoafestasedecoracoes.partymanager.to;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 import br.com.ieoafestasedecoracoes.partymanager.domain.Vendor;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class VendorTO implements Serializable {
+@EqualsAndHashCode(callSuper = false)
+@JsonInclude(value = Include.NON_NULL)
+public class VendorTO implements DomainObjectInteface {
 
-	private static final long serialVersionUID = 1L;
-
-	private int id;
-
+	private Integer id;
 	private String firstName;
 	private String lastName;
 	private String email;

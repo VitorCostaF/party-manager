@@ -26,12 +26,12 @@ public class VendorController {
 
 	@GetMapping
 	public ResponseEntity<List<VendorTO>> allUsers() {
-		return ResponseEntity.ok(VendorTO.fromUserList(service.findAll()));
+		return ResponseEntity.ok(service.findAll());
 	}
 
 	@GetMapping("{id}")
 	public ResponseEntity<VendorTO> findById(@PathVariable Integer id) {
-		return ResponseEntity.ok(new VendorTO(service.findById(id)));
+		return ResponseEntity.ok(service.findById(id));
 	}
 
 	@DeleteMapping("{id}")
@@ -40,25 +40,26 @@ public class VendorController {
 		return ResponseEntity.noContent().build();
 	}
 
-	@PutMapping
-	public ResponseEntity<VendorTO> update(@RequestBody VendorTO vendorTO) {
-		return ResponseEntity.ok(new VendorTO(service.update(new Vendor(vendorTO))));
+	@PutMapping("{id}")
+	public ResponseEntity<VendorTO> update(@RequestBody VendorTO vendorTO, @PathVariable Integer id) {
+		return ResponseEntity.ok(service.update(vendorTO, id));
 	}
 	
+	// TODO devolver created
 	@PostMapping
 	public ResponseEntity<VendorTO> create(@RequestBody VendorTO vendorTO) {
-		return ResponseEntity.ok(new VendorTO(service.create(new Vendor(vendorTO))));
+		return ResponseEntity.ok(service.create(new Vendor(vendorTO)));
 	}
 
 	@GetMapping("/first-name/{firstName}")
-	public ResponseEntity<VendorTO> findByFirstName(@PathVariable String firstName) {
-		return ResponseEntity.ok(new VendorTO(service.findByFirstName(firstName)));
+	public ResponseEntity<List<VendorTO>> findByFirstName(@PathVariable String firstName) {
+		return ResponseEntity.ok(service.findByFirstName(firstName));
 	}
 	
 	
 	@GetMapping("/email/{email}")
 	public ResponseEntity<VendorTO> findByEmail(@PathVariable String email) {
-		return ResponseEntity.ok(new VendorTO(service.findByEmail(email)));
+		return ResponseEntity.ok(service.findByEmail(email));
 	}
 
 }

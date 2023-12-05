@@ -14,13 +14,13 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import br.com.ieoafestasedecoracoes.partymanager.to.DomainObjectTO;
+import br.com.ieoafestasedecoracoes.partymanager.to.DomainObjectInteface;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class RequestUtil {
 	
-	public static <T extends DomainObjectTO> void createEntity(MockMvc mockMvc, String path, T domainObject,
+	public static <T extends DomainObjectInteface> void createEntity(MockMvc mockMvc, String path, T domainObject,
 			ObjectMapper mapper) throws UnsupportedEncodingException, Exception {
 		String domainJsonStr = mapper.writeValueAsString(domainObject);
 		
