@@ -11,6 +11,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -22,6 +23,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -30,10 +32,10 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import br.com.ieoafestasedecoracoes.partymanager.to.DomainObjectInteface;
 import br.com.ieoafestasedecoracoes.partymanager.util.RequestUtil;
+import jakarta.servlet.ServletException;
 import lombok.extern.slf4j.Slf4j;
 
 // TODO achar um jeito de identificar qual tipo de objeto quebrou o teste
-// TODO investigar a demora do método create
 @SpringBootTest
 @TestInstance(Lifecycle.PER_CLASS)
 @Slf4j
@@ -59,7 +61,18 @@ class BasicControllerTest {
 	}
 	
 	@Test
-	void shouldReturnAtLeast2Objects() throws UnsupportedEncodingException, Exception {
+	void findAllShouldReturnOk() {
+		domainObjectsToTest.forEach(obj -> {			
+			try {
+				mockMvc.perform(get(obj.getPath())).andExpect(status().isOk());
+			} catch (Exception e) {
+				log.error("Problema no findAll do objeto {}", obj.getObjectName(), e);
+			}
+		});
+	}
+	
+	@Test
+	void shouldReturnAtLeast2Objects() {
 		
 		domainObjectsToTest.forEach(obj -> {			
 			List<JsonNode> objsJson;
@@ -74,7 +87,7 @@ class BasicControllerTest {
 	}
 	
 	@Test
-	void shouldReturnById() throws Exception {
+	void shouldReturnById() {
 		
 		domainObjectsToTest.forEach(obj -> {
 			try {
@@ -89,7 +102,7 @@ class BasicControllerTest {
 	}
 	
 	@Test
-	void shouldDelete() throws Exception {
+	void shouldDelete() {
 		
 		domainObjectsToTest.forEach(obj -> {			
 			Integer id = obj.getObjectToDelete().getId();
@@ -111,7 +124,7 @@ class BasicControllerTest {
 	}
 	
 	@Test
-	void shouldUpdate() throws Exception {
+	void shouldUpdate() {
 		
 		domainObjectsToTest.forEach(obj -> {
 			
@@ -128,11 +141,33 @@ class BasicControllerTest {
 				log.error("Erro ao fazer update do objeto {} de id {}", obj.getObjectName(), obj.getObjectToUpdate().getId(), e);
 			}			
 		});
+	}
+	
+//	TODO implementar o retorno correto quando for tratada a excessão
+	@Test
+	void shouldNotupdateAnInexistentObject() throws Exception {
 		
+		domainObjectsToTest.forEach(obj -> {			
+			String objectUpdatedJson;
+			
+			try {
+				objectUpdatedJson = mapper.writeValueAsString(obj.getObjectToUpdate());
+				Assertions.assertThrows(ServletException.class, () -> 
+				mockMvc
+				.perform(
+						put(obj.getPathId(), -1)
+						.content(objectUpdatedJson)
+						.contentType(MediaType.APPLICATION_JSON)));
+				
+			} catch (JsonProcessingException e) {
+				log.error("Problema ao buscar por id o objeto {}", obj.getObjectName(), e);
+			}
+			
+		});
 	}
 	
 	@Test
-	void shouldCreate() throws Exception {
+	void shouldCreate() {
 		
 		domainObjectsToTest.forEach(obj -> {
 			try {

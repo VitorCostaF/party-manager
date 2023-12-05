@@ -38,7 +38,7 @@ public class VendorService {
 
 	public VendorTO update(VendorTO vendor, Integer id) {
 
-		VendorTO userBD = findById(id);
+		Vendor userBD = repository.findById(id).orElse(null);
 		if (userBD == null) {
 			throw new RuntimeException("Usuário não existente para atualização");
 		}
