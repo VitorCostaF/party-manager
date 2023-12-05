@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.ieoafestasedecoracoes.partymanager.domain.Vendor;
+import br.com.ieoafestasedecoracoes.partymanager.repository.CompanyRepository;
 import br.com.ieoafestasedecoracoes.partymanager.repository.VendorRepository;
 import br.com.ieoafestasedecoracoes.partymanager.to.VendorTO;
 
@@ -15,6 +16,9 @@ public class VendorService {
 
 	@Autowired
 	private VendorRepository repository;
+	
+	@Autowired
+	private CompanyRepository companyRepository;
 	
 	@Autowired
 	private ModelMapper mapper;
@@ -48,9 +52,19 @@ public class VendorService {
 
 	}
 
-	public VendorTO create(Vendor user) {
-		user.setId(null);
-		return mapper.map(repository.save(user), VendorTO.class);
+	public VendorTO create(VendorTO vendorTO) {
+		
+		if(!companyRepository.existsById(vendorTO.getCompanyId())) {
+			throw new RuntimeException("Empresa vinculada ao usuário não existe");
+		}
+		
+		Vendor vendor = mapper.map(vendorTO, Vendor.class);
+		vendor.setId(null);
+		
+		repository.save(vendor);
+		
+		vendorTO.setId(vendor.getId());
+		return vendorTO;
 	}
 
 	public VendorTO findByEmail(String firstName) {

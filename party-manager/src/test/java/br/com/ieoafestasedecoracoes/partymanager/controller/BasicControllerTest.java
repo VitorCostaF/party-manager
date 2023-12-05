@@ -197,7 +197,7 @@ class BasicControllerTest {
 		
 	}
 	
-	private void deleteAllObjects() throws Exception {
+	private void deleteAllObjects() {
 		
 		domainObjectsToTest.forEach(obj -> {
 			try {
@@ -209,7 +209,7 @@ class BasicControllerTest {
 		
 	}
 	
-	private void createObjects() throws UnsupportedEncodingException, Exception {
+	private void createObjects() {
 		
 		domainObjectsToTest.forEach(obj -> {
 			
@@ -217,12 +217,20 @@ class BasicControllerTest {
 			
 			try {
 				obj.setObjectByIdJson(mapper.writeValueAsString(obj.getObjectById()));
+				
+				for(var o : obj.getDependencyObjects().entrySet()) {
+					RequestUtil.createEntity(mockMvc, o.getKey(), o.getValue(), mapper);
+				}
+				
+				obj.setDepenciesId();
 
 				RequestUtil.createEntity(mockMvc, path, obj.getObjectById(), mapper);
 				RequestUtil.createEntity(mockMvc, path, obj.getObjectToDelete(), mapper);
 				RequestUtil.createEntity(mockMvc, path, obj.getObjectToUpdate(), mapper);
 				
 				obj.setObjectByIdJson(((ObjectNode) mapper.readTree(obj.getObjectByIdJson())).put("id", obj.getObjectById().getId()).toString());
+				
+				
 			} catch (Exception e) {
 				log.error("problema ao criar objetos {}", obj.getObjectName(), e);
 			}

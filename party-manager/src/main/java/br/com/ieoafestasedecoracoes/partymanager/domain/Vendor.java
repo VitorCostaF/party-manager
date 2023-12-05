@@ -36,7 +36,7 @@ public class Vendor {
 	private String password;
 	
 	@ManyToOne
-	@JoinColumn(name = "company_id")
+	@JoinColumn(name = "company_id", nullable = false)
 	private Company company;
 
 	public Vendor(VendorTO userTO) {

@@ -1,9 +1,14 @@
 package br.com.ieoafestasedecoracoes.partymanager.testobjects;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.stereotype.Component;
 
 import br.com.ieoafestasedecoracoes.partymanager.controller.DomainObjectsToTest;
 import br.com.ieoafestasedecoracoes.partymanager.to.AddressTO;
+import br.com.ieoafestasedecoracoes.partymanager.to.DomainObjectInteface;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -23,5 +28,10 @@ public class AddressObjects implements DomainObjectsToTest <AddressTO> {
 	
 	@Setter
 	private String objectByIdJson;
+
+	@Override
+	public Map<String, DomainObjectInteface> getDependencyObjects() {
+		return Collections.unmodifiableMap(new HashMap<>());
+	}
 
 }

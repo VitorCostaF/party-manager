@@ -1,0 +1,1 @@
+ALTER TABLE vendor MODIFY COLUMN company_id INT not null; 

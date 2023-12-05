@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.ieoafestasedecoracoes.partymanager.domain.Vendor;
 import br.com.ieoafestasedecoracoes.partymanager.service.VendorService;
 import br.com.ieoafestasedecoracoes.partymanager.to.VendorTO;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("vendors")
@@ -41,14 +42,14 @@ public class VendorController {
 	}
 
 	@PutMapping("{id}")
-	public ResponseEntity<VendorTO> update(@RequestBody VendorTO vendorTO, @PathVariable Integer id) {
+	public ResponseEntity<VendorTO> update(@Valid @RequestBody VendorTO vendorTO, @PathVariable Integer id) {
 		return ResponseEntity.ok(service.update(vendorTO, id));
 	}
 	
 	// TODO devolver created
 	@PostMapping
-	public ResponseEntity<VendorTO> create(@RequestBody VendorTO vendorTO) {
-		return ResponseEntity.ok(service.create(new Vendor(vendorTO)));
+	public ResponseEntity<VendorTO> create(@Valid @RequestBody VendorTO vendorTO) {
+		return ResponseEntity.ok(service.create(vendorTO));
 	}
 
 	@GetMapping("/first-name/{firstName}")
