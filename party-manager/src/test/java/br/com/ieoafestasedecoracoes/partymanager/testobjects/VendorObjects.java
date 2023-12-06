@@ -26,8 +26,8 @@ public class VendorObjects implements DomainObjectsToTest<VendorTO> {
 	private VendorTO objectById = new VendorTO(1, "VendorId", "Byid", "vendor.by.email@email.com", "1234", 1);
 	private VendorTO objectToDelete = new VendorTO(1, "VendorDelete", "ToDelete", "vendor.to.delete@email.com", "12346", 1);
 	private VendorTO objectToUpdate = new VendorTO(1, "VendorUpdate", "Byid", "vendor.to.update@email.com", "1234", 1);
-	private VendorTO objectUpdated = new VendorTO(1, "Street Updated", "City Updated", "200", "Complement Updated", 1);
-	private VendorTO objectToCreate = new VendorTO(1, "Street Vendor Created", "City Vendor Created", "1234", "Complement Vendor Created", 1);
+	private VendorTO objectUpdated = new VendorTO(1, "VendorUpdated", "Updated", "vendor.updated@email.com", "1234", 1);
+	private VendorTO objectToCreate = new VendorTO(1, "VendorCreated", "Created", "vendor.created@email.com", "13245", 1);
 	
 	private String path = "/vendors";
 	private String pathId = path + "/{id}";

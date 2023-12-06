@@ -47,7 +47,9 @@ public class VendorService {
 			throw new RuntimeException("Usuário não existente para atualização");
 		}
 		
-		repository.save(mapper.map(vendor, Vendor.class));
+		vendor.setId(id);
+		mapper.map(vendor, userBD);
+		repository.save(userBD);
 		return vendor;
 
 	}

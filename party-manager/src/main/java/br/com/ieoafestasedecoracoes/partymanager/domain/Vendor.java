@@ -39,13 +39,4 @@ public class Vendor {
 	@JoinColumn(name = "company_id", nullable = false)
 	private Company company;
 
-	public Vendor(VendorTO userTO) {
-		if (userTO != null) {
-			this.id = userTO.getId();
-			this.firstName = userTO.getFirstName();
-			this.lastName = userTO.getLastName();
-			this.email = userTO.getEmail();
-			this.password = userTO.getPassword();
-		}
-	}
 }

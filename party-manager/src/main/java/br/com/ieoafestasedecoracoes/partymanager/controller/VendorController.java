@@ -52,7 +52,7 @@ public class VendorController {
 		return ResponseEntity.ok(service.create(vendorTO));
 	}
 
-	@GetMapping("/first-name/{firstName}")
+	@GetMapping("/firstname/{firstName}")
 	public ResponseEntity<List<VendorTO>> findByFirstName(@PathVariable String firstName) {
 		return ResponseEntity.ok(service.findByFirstName(firstName));
 	}
