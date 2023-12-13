@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.ieoafestasedecoracoes.partymanager.to.CompanyTO;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -37,7 +38,7 @@ public class Company {
 	@Column(nullable = false, unique = true)
 	private String document;
 
-	@OneToMany(mappedBy = "company")
+	@OneToMany(mappedBy = "company", cascade = CascadeType.REMOVE)
 	private List<Vendor> vendors = new ArrayList<>();
 	
 	@ManyToMany(fetch = FetchType.LAZY)
@@ -50,7 +51,7 @@ public class Company {
 	)
 	private List<Client> clients = new ArrayList<>();
 	
-	@OneToMany(mappedBy = "company")
+	@OneToMany(mappedBy = "company", cascade = CascadeType.REMOVE)
 	private List<Material> materials;
 
 	public Company(CompanyTO companyTO) {
