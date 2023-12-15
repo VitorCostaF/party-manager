@@ -1,15 +1,18 @@
 package br.com.ieoafestasedecoracoes.partymanager.to;
 
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
-import br.com.ieoafestasedecoracoes.partymanager.domain.Client;
 import br.com.ieoafestasedecoracoes.partymanager.domain.ClientType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
-public class ClientTO {
+@NoArgsConstructor
+@JsonInclude(value = Include.NON_NULL)
+public class ClientTO implements DomainObjectInteface {
 
 	private Integer id;
 	private String document;
@@ -18,20 +21,5 @@ public class ClientTO {
 	private ClientType type;
 	private String email;
 	private String password;
-	
-	public ClientTO(Client client) {
-		if(client != null) {			
-			this.id = client.getId();
-			this.document = client.getDocument();
-			this.firstName = client.getFirstName();
-			this.lastName = client.getLastName();	
-			this.type = client.getType();
-			this.email = client.getEmail();	
-			this.password = client.getPassword();
-		}
-	}
 
-	public static List<ClientTO> fromClientList(List<Client> list) {
-		return list.stream().map(ClientTO::new).toList();
-	}
 }

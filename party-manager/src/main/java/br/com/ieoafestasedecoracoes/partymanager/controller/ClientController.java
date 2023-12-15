@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.ieoafestasedecoracoes.partymanager.domain.Client;
 import br.com.ieoafestasedecoracoes.partymanager.service.ClientService;
 import br.com.ieoafestasedecoracoes.partymanager.to.ClientTO;
 
@@ -26,12 +25,12 @@ public class ClientController {
 	
 	@GetMapping("{id}")
 	public ResponseEntity<ClientTO> findById(@PathVariable Integer id) {
-		return ResponseEntity.ok(new ClientTO(service.findById(id)));
+		return ResponseEntity.ok(service.findById(id));
 	}
 	
 	@GetMapping
 	public ResponseEntity<List<ClientTO>> findAll() {
-		return ResponseEntity.ok(ClientTO.fromClientList(service.findAll()));
+		return ResponseEntity.ok(service.findAll());
 	}
 	
 	@DeleteMapping("{id}")
@@ -40,24 +39,24 @@ public class ClientController {
 		return ResponseEntity.noContent().build();
 	}
 	
-	@PutMapping()
-	public ResponseEntity<ClientTO> update(@RequestBody ClientTO clientTO) {
-		return ResponseEntity.ok(new ClientTO(service.update(new Client(clientTO))));
+	@PutMapping("{id}")
+	public ResponseEntity<ClientTO> update(@RequestBody ClientTO clientTO, @PathVariable Integer id) {
+		return ResponseEntity.ok(service.update(clientTO, id));
 	}
 	
 	@PostMapping
 	public ResponseEntity<ClientTO> create(@RequestBody ClientTO clientTO) {
-		return ResponseEntity.ok(new ClientTO(service.create(new Client(clientTO))));
+		return ResponseEntity.ok(service.create(clientTO));
 	}
 	
 	@GetMapping("email/{email}")
 	public ResponseEntity<ClientTO> findByEmail(@PathVariable String email) {
-		return ResponseEntity.ok(new ClientTO(service.findByEmail(email)));
+		return ResponseEntity.ok(service.findByEmail(email));
 	}
 	
 	@GetMapping("first-name/{firstName}")
 	public ResponseEntity<ClientTO> findByFirstName(@PathVariable String firstName) {
-		return ResponseEntity.ok(new ClientTO(service.findByEmail(firstName)));
+		return ResponseEntity.ok(service.findByEmail(firstName));
 	}
 
  }

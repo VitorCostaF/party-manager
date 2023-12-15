@@ -3,7 +3,6 @@ package br.com.ieoafestasedecoracoes.partymanager.domain;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.ieoafestasedecoracoes.partymanager.to.ClientTO;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -36,7 +35,7 @@ public class Client {
 	
 	private String lastName;
 	
-	@Column(nullable = false)
+	@Column(name = "client_type", nullable = false)
 	@Enumerated(EnumType.STRING)
 	private ClientType type;
 	
@@ -49,19 +48,7 @@ public class Client {
 	@ManyToMany(mappedBy = "clients")
 	private List<Company> companies = new ArrayList<>(); 
 	
-	@OneToMany
+	@OneToMany(mappedBy = "client")
 	private List<Party> parties;
-	
-	public Client(ClientTO clientTO) {
-		if (clientTO != null) {
-			this.id = clientTO.getId();
-			this.document = clientTO.getDocument();
-			this.firstName = clientTO.getFirstName();
-			this.lastName = clientTO.getLastName();
-			this.type = clientTO.getType();
-			this.email = clientTO.getEmail();
-			this.password = clientTO.getPassword();
-		}
-	}
 
 }
