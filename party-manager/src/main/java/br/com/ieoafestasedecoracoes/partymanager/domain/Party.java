@@ -29,13 +29,14 @@ public class Party {
 	private LocalDate date;
 	
 	@ManyToOne
+	@JoinColumn(nullable = false)
 	private Client client;  
 	
 	@ManyToOne
-	@JoinColumn(name = "address_id")
+	@JoinColumn(name = "address_id", nullable = false)
 	private Address address;
 	
-	@OneToMany
+	@OneToMany(mappedBy = "party")
 	private List<PartyMaterial> partyMaterials = new ArrayList<>();
 	
 }
