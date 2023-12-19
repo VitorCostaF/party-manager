@@ -9,6 +9,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import org.junit.jupiter.api.Assertions;
@@ -28,7 +29,9 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import br.com.ieoafestasedecoracoes.partymanager.to.DomainObjectInteface;
 import br.com.ieoafestasedecoracoes.partymanager.util.RequestUtil;
@@ -55,6 +58,9 @@ class BasicControllerTest {
 		mockMvc = MockMvcBuilders.webAppContextSetup(context).build();
 		mapper = new ObjectMapper();
 		mapper.setPropertyNamingStrategy(PropertyNamingStrategies.KEBAB_CASE);
+		mapper.registerModule(new JavaTimeModule());
+	    mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+	    mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm"));
 		
 		deleteAllObjects();
 		createObjects();

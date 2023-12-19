@@ -1,9 +1,10 @@
 package br.com.ieoafestasedecoracoes.partymanager.domain;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -26,7 +27,8 @@ public class Party {
 	@SequenceGenerator(name = "party_seq", allocationSize = 1)
 	private Integer id;
 	
-	private LocalDate date;
+	@Column(name = "party_date")
+	private LocalDateTime date;
 	
 	@ManyToOne
 	@JoinColumn(nullable = false)

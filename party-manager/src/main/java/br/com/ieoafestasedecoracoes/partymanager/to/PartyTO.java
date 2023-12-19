@@ -1,7 +1,8 @@
 package br.com.ieoafestasedecoracoes.partymanager.to;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
@@ -13,10 +14,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 @JsonInclude(value = Include.NON_NULL)
-public class PartyTO {
+public class PartyTO implements DomainObjectInteface {
 
 	private Integer id;
-	private LocalDate date;
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm")
+	private LocalDateTime date;
 	private Integer clientId;
 	private Integer addressId;
 	

@@ -3,6 +3,7 @@ package br.com.ieoafestasedecoracoes.partymanager.domain;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -33,6 +34,6 @@ public class Address {
 	
 	private String complement;
 	
-	@OneToMany(mappedBy = "address")
+	@OneToMany(mappedBy = "address", cascade = CascadeType.REMOVE)
 	private List<Party> parties = new ArrayList<>(); 
 }
