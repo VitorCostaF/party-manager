@@ -32,11 +32,11 @@ public class PartyMaterial {
 	private LocalDate endRentDate;
 	
 	@ManyToOne
-	@JoinColumn(name = "material_id", referencedColumnName = "id")
+	@JoinColumn(name = "material_id", referencedColumnName = "id", nullable = false)
 	private Material material;
 	
 	@ManyToOne
-	@JoinColumn(name = "party_id", referencedColumnName = "id")
+	@JoinColumn(name = "party_id", referencedColumnName = "id", nullable = false)
 	private Party party;
 	
 	

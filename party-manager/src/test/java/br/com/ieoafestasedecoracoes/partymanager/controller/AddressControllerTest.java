@@ -3,11 +3,13 @@ package br.com.ieoafestasedecoracoes.partymanager.controller;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
@@ -24,6 +27,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
+import br.com.ieoafestasedecoracoes.partymanager.testobjects.AddressObjects;
 import br.com.ieoafestasedecoracoes.partymanager.to.AddressTO;
 import lombok.extern.log4j.Log4j2;
 
@@ -37,6 +41,11 @@ class AddressControllerTest {
 	private WebApplicationContext applicationContext;
 	
 	@Autowired
+	private BasicControllerTest2 basicControllerTest;
+	
+	private AddressObjects addressObjects;
+	
+	@Autowired
 	private MockMvc mockMvc;
 	
 	private ObjectMapper mapper;
@@ -48,7 +57,7 @@ class AddressControllerTest {
 	
 	private String addressByIdJson;
 	
-	private String PATH = "/address";
+	private String PATH = "/addresses";
 	private String PATH_ID = PATH + "/{id}";
 	
 	@BeforeAll
@@ -65,6 +74,12 @@ class AddressControllerTest {
 		
 		deleteAllAddresses();
 		createAddresses();
+	}
+	
+	@Test
+	void shouldReturnById() throws Exception {
+		ResultActions response = basicControllerTest.shouldReturnById(addressById, PATH_ID, mockMvc);
+		response.andExpect(content().json(addressByIdJson));
 	}
 	
 	private void deleteAllAddresses() throws Exception {

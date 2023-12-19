@@ -3,6 +3,7 @@ package br.com.ieoafestasedecoracoes.partymanager.domain;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -33,7 +34,7 @@ public class Material {
 
 	private Integer quantity;
 
-	@OneToMany(mappedBy = "material")
+	@OneToMany(mappedBy = "material", cascade = CascadeType.REMOVE)
 	private List<PartyMaterial> partyMaterials = new ArrayList<>();
 
 	@ManyToOne
