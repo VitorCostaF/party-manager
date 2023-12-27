@@ -1,9 +1,11 @@
 package br.com.ieoafestasedecoracoes.partymanager.controller;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.io.UnsupportedEncodingException;
 import java.util.List;
@@ -15,7 +17,9 @@ import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -31,6 +35,7 @@ import br.com.ieoafestasedecoracoes.partymanager.testobjects.AddressObjects;
 import br.com.ieoafestasedecoracoes.partymanager.to.AddressTO;
 import lombok.extern.log4j.Log4j2;
 
+// TODO adicionar os status code nas validações
 @SpringBootTest
 @AutoConfigureMockMvc
 @TestInstance(Lifecycle.PER_CLASS)
@@ -41,7 +46,7 @@ class AddressControllerTest {
 	private WebApplicationContext applicationContext;
 	
 	@Autowired
-	private BasicControllerTest2 basicControllerTest;
+	private APICall basicControllerTest;
 	
 	private AddressObjects addressObjects;
 	
@@ -78,8 +83,51 @@ class AddressControllerTest {
 	
 	@Test
 	void shouldReturnById() throws Exception {
-		ResultActions response = basicControllerTest.shouldReturnById(addressById, PATH_ID, mockMvc);
-		response.andExpect(content().json(addressByIdJson));
+		MockHttpServletResponse response = basicControllerTest.executeById(addressById, PATH_ID, mockMvc);		
+		assertThat(response.getContentAsString()).isEqualTo(addressByIdJson);		
+	}
+	
+	@Test
+	void shouldReturnAtLeast2Objects() throws Exception {
+		List<JsonNode> objsJson;
+		MockHttpServletResponse response = basicControllerTest.executeFindAll(PATH, mockMvc);
+		
+		String jsonResponse = response.getContentAsString();
+		objsJson = mapper.readValue(jsonResponse, new TypeReference<List<JsonNode>>() {});
+		
+		assertThat(objsJson).hasSizeGreaterThanOrEqualTo(2);
+		assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+		
+	}
+	
+	@Test
+	void shouldDelete() throws Exception {
+		MockHttpServletResponse response = basicControllerTest.executeDelete(addressToDelete, PATH_ID, mockMvc);
+		assertThat(response.getContentAsString()).isEqualTo("{}");
+	}
+	
+	@Test
+	void shouldUpdate() throws Exception {
+		AddressTO addressUpdated = new AddressTO(1, "Street Updated", "City Updated", "200", "Complement Updated");
+		addressUpdated.setId(addressToUpdate.getId());
+		String objectUpdatedJson = mapper.writeValueAsString(addressUpdated);
+		
+		MockHttpServletResponse response = basicControllerTest.executeUpdate(objectUpdatedJson, addressUpdated.getId(), PATH_ID, mockMvc);
+		assertThat(response.getContentAsString()).isEqualTo(objectUpdatedJson);
+	}
+	
+	// TODO voltar o id de uma forma diferente
+	@Test
+	void shouldCreate() throws Exception {
+		AddressTO addressToCreate = new AddressTO(1, "Street Address Created", "City Address Created", "1234", "Complement Address Created");
+		addressToCreate.setId(null);
+		String addressToCreateJson = mapper.writeValueAsString(addressToCreate);
+				
+		MockHttpServletResponse response = basicControllerTest.executeCreate(addressToCreateJson, PATH, mockMvc);
+		ObjectNode jsonResponse = ((ObjectNode)mapper.readTree(response.getContentAsString()));
+		jsonResponse.remove("id");
+		
+		assertThat(jsonResponse.toString()).hasToString(addressToCreateJson);
 	}
 	
 	private void deleteAllAddresses() throws Exception {
