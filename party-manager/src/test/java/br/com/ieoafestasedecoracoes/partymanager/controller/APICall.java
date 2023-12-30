@@ -4,16 +4,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.test.web.servlet.MockMvc;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import br.com.ieoafestasedecoracoes.partymanager.to.DomainObjectInteface;
 
@@ -37,9 +32,8 @@ class APICall {
 				.getResponse();
 	}
 	
-	public MockHttpServletResponse executeDelete(DomainObjectInteface obj, String path, MockMvc mockMvc) throws Exception {
+	public MockHttpServletResponse executeDelete(Integer id, String path, MockMvc mockMvc) throws Exception {
 
-		Integer id = obj.getId();
 		mockMvc
 			.perform(
 				delete(path, id));
@@ -74,5 +68,15 @@ class APICall {
 				.getResponse();
 
 	}
+	
+	public MockHttpServletResponse executeGet(Object param, String path, MockMvc mockMvc) throws Exception {
+		return mockMvc
+			.perform(
+				get(path, param))
+			.andReturn()
+				.getResponse();
+	}
+	
+	
 	
 }

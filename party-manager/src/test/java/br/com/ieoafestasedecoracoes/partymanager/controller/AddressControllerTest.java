@@ -2,7 +2,6 @@ package br.com.ieoafestasedecoracoes.partymanager.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 import java.util.List;
 
@@ -15,11 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -37,9 +33,6 @@ import jakarta.servlet.ServletException;
 @AutoConfigureMockMvc
 @TestInstance(Lifecycle.PER_CLASS)
 class AddressControllerTest {
-	
-	@Autowired
-	private WebApplicationContext applicationContext;
 	
 	@Autowired
 	private APICall basicControllerTest;
@@ -66,12 +59,6 @@ class AddressControllerTest {
 	
 	@BeforeAll
 	void setup() throws Exception {
-		
-		this.mockMvc = MockMvcBuilders.webAppContextSetup(applicationContext)
-				.defaultRequest(
-					post(PATH)
-					.contentType(MediaType.APPLICATION_JSON))
-			.build();
 		
 		this.mapper = new ObjectMapper();
 		this.mapper.setPropertyNamingStrategy(PropertyNamingStrategies.KEBAB_CASE);
@@ -101,7 +88,7 @@ class AddressControllerTest {
 	
 	@Test
 	void shouldDelete() throws Exception {
-		MockHttpServletResponse response = basicControllerTest.executeDelete(addressToDelete, PATH_ID, mockMvc);
+		MockHttpServletResponse response = basicControllerTest.executeDelete(addressToDelete.getId(), PATH_ID, mockMvc);
 		assertThat(response.getContentAsString()).isEqualTo("{}");
 	}
 	

@@ -1,6 +1,5 @@
 package br.com.ieoafestasedecoracoes.partymanager.domain;
 
-import br.com.ieoafestasedecoracoes.partymanager.to.VendorTO;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
