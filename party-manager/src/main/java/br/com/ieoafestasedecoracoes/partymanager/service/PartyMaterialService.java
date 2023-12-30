@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.ieoafestasedecoracoes.partymanager.domain.PartyMaterial;
+import br.com.ieoafestasedecoracoes.partymanager.domain.PartyMaterialId;
 import br.com.ieoafestasedecoracoes.partymanager.repository.PartyMaterialRepository;
 import br.com.ieoafestasedecoracoes.partymanager.to.PartyMaterialTO;
 
@@ -20,45 +21,39 @@ public class PartyMaterialService {
 	private ModelMapper mapper;
 
 	
-	public PartyMaterialTO findById(Integer id) {
-		PartyMaterial party = repository.findById(id).orElse(null);
-		if(party != null) {
-			return mapper.map(party, PartyMaterialTO.class);
-		}
-		return new PartyMaterialTO();
+	public List<PartyMaterialTO> findByMaterial(Integer materialId) {
+		List<PartyMaterial> party = repository.findByMaterialId(materialId);
+		return toPartyMaterialTOList(party);
 	}
 	
-	public List<PartyMaterialTO> findAll() {
-		return toPartyMaterialTOList(repository.findAll());
+	public List<PartyMaterialTO> findByParty(Integer partyId) {
+		List<PartyMaterial> party = repository.findByPartyId(partyId);
+		return toPartyMaterialTOList(party);
+	}
+		
+	public void delete(Integer partyId, Integer materiald) {
+		repository.deleteById(new PartyMaterialId(materiald, partyId));
 	}
 	
-	public void delete(Integer id) {
-		repository.deleteById(id);
-	}
-	
-	public PartyMaterialTO update(PartyMaterialTO party, Integer id) {
-		PartyMaterial partyDB = repository.findById(id).orElse(null);
+	public PartyMaterialTO update(PartyMaterialTO partyMaterial, Integer partyId, Integer materiald) {
+		PartyMaterial partyDB = repository.findById(new PartyMaterialId(materiald, partyId)).orElse(null);
 		
 		if(partyDB == null) {
 			throw new RuntimeException("PartyMaterial not found to be updated");
 		}
 		
-		party.setId(id);
-		mapper.map(party, partyDB);	
+		mapper.map(partyMaterial, partyDB);	
 		
 		repository.save(partyDB);
-		return party;
+		return partyMaterial;
 	}
 	
-	public PartyMaterialTO create(PartyMaterialTO party) {
-		PartyMaterial partyBD = mapper.map(party, PartyMaterial.class);
+	public PartyMaterialTO create(PartyMaterialTO partyMaterial) {
+		PartyMaterial partyBD = mapper.map(partyMaterial, PartyMaterial.class);
 		
-		partyBD.setId(null);
 		repository.save(partyBD);
 		
-		party.setId(partyBD.getId());
-		
-		return party;
+		return partyMaterial;
 	}
 	
 	private List<PartyMaterialTO> toPartyMaterialTOList(List<PartyMaterial> parties) {

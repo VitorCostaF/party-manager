@@ -1,19 +1,16 @@
 package br.com.ieoafestasedecoracoes.partymanager.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,7 +18,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
@@ -31,15 +27,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
-import br.com.ieoafestasedecoracoes.partymanager.testobjects.AddressObjects;
+import br.com.ieoafestasedecoracoes.partymanager.domain.Address;
+import br.com.ieoafestasedecoracoes.partymanager.repository.AddressRepository;
 import br.com.ieoafestasedecoracoes.partymanager.to.AddressTO;
-import lombok.extern.log4j.Log4j2;
+import jakarta.servlet.ServletException;
 
 // TODO adicionar os status code nas validações
 @SpringBootTest
 @AutoConfigureMockMvc
 @TestInstance(Lifecycle.PER_CLASS)
-@Log4j2
 class AddressControllerTest {
 	
 	@Autowired
@@ -48,15 +44,18 @@ class AddressControllerTest {
 	@Autowired
 	private APICall basicControllerTest;
 	
-	private AddressObjects addressObjects;
+	@Autowired
+	private AddressRepository repository;
 	
 	@Autowired
 	private MockMvc mockMvc;
 	
 	private ObjectMapper mapper;
 	
+	@Autowired
+	private ModelMapper modelMapper;
+	
 	private AddressTO addressById;
-	private AddressTO address1;
 	private AddressTO addressToDelete;
 	private AddressTO addressToUpdate;
 	
@@ -130,59 +129,37 @@ class AddressControllerTest {
 		assertThat(jsonResponse.toString()).hasToString(addressToCreateJson);
 	}
 	
+	@Test
+	void shouldNotupdateAnInexistentId() throws Exception {
+		String objectUpdatedJson = mapper.writeValueAsString(addressToUpdate);
+		
+		assertThatThrownBy(() -> basicControllerTest.executeUpdate(objectUpdatedJson, -1, PATH_ID, mockMvc))
+			.isInstanceOf(ServletException.class);
+	}
+	
 	private void deleteAllAddresses() throws Exception {
 		
-		String addressesToDeleteStr =  mockMvc
-			.perform(
-				get(PATH))
-			.andReturn()
-				.getResponse().getContentAsString();
+		List<Address> addresses = repository.findAll();
 		
-		List<AddressTO> addressesToDelete = mapper.readValue(addressesToDeleteStr, new TypeReference<List<AddressTO>>() {});
-		
-		addressesToDelete.forEach(a -> {
-			try {
-				mockMvc.perform(delete(PATH_ID,a.getId()));
-			} catch (Exception e) {
-				log.info("problema ao deleter address {}", a.getId(), e);
-			}
-		});
+		addresses.forEach(repository::delete);
 		
 	}
 	
 	private void createAddresses() throws Exception {
 		
 		addressById = new AddressTO(1, "By Id Street", "By Id City", "123456", "Complement By Id");
-		address1 = new AddressTO(1, "Street 1", "City 1", "123456", "Complement 1");
 		addressToDelete = new AddressTO(1, "Street To Delete", "City To Delete", "404", "Complement To Delete");
 		addressToUpdate = new AddressTO(1, "Street To Update", "City To Update", "200", "Complement To Update");
 		
+		Address address = repository.save(modelMapper.map(addressById, Address.class));
+		addressById.setId(address.getId());
 		addressByIdJson = mapper.writeValueAsString(addressById);
-				
-		createAddress(addressById, mapper);
-		createAddress(address1, mapper);
-		createAddress(addressToDelete, mapper);
-		createAddress(addressToUpdate, mapper);
 		
-		addressByIdJson = ((ObjectNode) mapper.readTree(addressByIdJson)).put("id", addressById.getId()).toString();
+		address = repository.save(modelMapper.map(addressToDelete, Address.class));
+		addressToDelete.setId(address.getId());
 		
-	}
-	
-	private void createAddress(AddressTO address, ObjectMapper mapper) throws UnsupportedEncodingException, Exception {
-		
-		String addressJsonStr = mapper.writeValueAsString(address);
-		
-		String response =  mockMvc
-		.perform(
-			post(PATH)
-				.content(addressJsonStr))
-			.andReturn()
-				.getResponse()
-				.getContentAsString();
-		
-		Integer id = mapper.readValue(response, JsonNode.class).get("id").asInt();
-		address.setId(id);
-		 
+		address = repository.save(modelMapper.map(addressToUpdate, Address.class));
+		addressToUpdate.setId(address.getId());
 	}
 
 }

@@ -23,25 +23,25 @@ public class PartyMaterialController {
 	@Autowired
 	private PartyMaterialService service;
 	
-	@GetMapping("{id}")
-	public ResponseEntity<PartyMaterialTO> findById(@PathVariable Integer id) {
-		return ResponseEntity.ok(service.findById(id));
+	@GetMapping("party/{partyId}")
+	public ResponseEntity<List<PartyMaterialTO>> findByPartyId(@PathVariable Integer partyId) {
+		return ResponseEntity.ok(service.findByParty(partyId));
 	}
 	
-	@GetMapping
-	public ResponseEntity<List<PartyMaterialTO>> findAll() {
-		return ResponseEntity.ok(service.findAll());
+	@GetMapping("material/{materialId}")
+	public ResponseEntity<List<PartyMaterialTO>> findByMaterialId(@PathVariable Integer materialId) {
+		return ResponseEntity.ok(service.findByMaterial(materialId));
 	}
 	
-	@DeleteMapping("{id}")
-	public ResponseEntity<Void> delete(@PathVariable Integer id) {
-		service.delete(id);
+	@DeleteMapping("{partyId}/{materialId}")
+	public ResponseEntity<Void> delete(@PathVariable Integer partyId, @PathVariable Integer materialId) {
+		service.delete(partyId, materialId);
 		return ResponseEntity.noContent().build();
 	}
 	
-	@PutMapping("{id}")
-	public ResponseEntity<PartyMaterialTO> update(@RequestBody PartyMaterialTO partyTO, @PathVariable Integer id) {
-		return ResponseEntity.ok(service.update(partyTO, id));
+	@PutMapping("party/{partyId}/material/{materialId}")
+	public ResponseEntity<PartyMaterialTO> update(@RequestBody PartyMaterialTO partyTO, @PathVariable Integer partyId, @PathVariable Integer materialId) {
+		return ResponseEntity.ok(service.update(partyTO, partyId, materialId));
 	}
 	
 	@PostMapping

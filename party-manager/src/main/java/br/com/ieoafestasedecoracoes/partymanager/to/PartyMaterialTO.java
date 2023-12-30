@@ -14,9 +14,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 @JsonInclude(value = Include.NON_NULL)
-public class PartyMaterialTO implements DomainObjectInteface {
+public class PartyMaterialTO {
 
-	private Integer id;
 	private Integer quantityRented;
 	
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm")
@@ -26,6 +25,7 @@ public class PartyMaterialTO implements DomainObjectInteface {
 	private LocalDateTime endRentDate;
 	
 	private Integer materialId;
+	
 	private Integer partyId;
 	
 }

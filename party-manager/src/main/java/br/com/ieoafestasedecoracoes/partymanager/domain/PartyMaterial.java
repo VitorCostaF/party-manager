@@ -4,23 +4,26 @@ import java.time.LocalDate;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.IdClass;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.SequenceGenerator;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
 @NoArgsConstructor
 @Data
+@IdClass(PartyMaterialId.class)
 public class PartyMaterial {
-
+	
 	@Id
-	@GeneratedValue(generator = "party_material_seq")
-	@SequenceGenerator(name = "party_material_seq", allocationSize = 1)
-	private Integer id;
+	@Column(name = "material_id")
+	private Integer materialId;
+	
+	@Id
+	@Column(name = "party_id")
+	private Integer partyId;
 	
 	@Column(name = "quantity_rented", nullable = false)
 	private Integer quantityRented;
@@ -38,6 +41,5 @@ public class PartyMaterial {
 	@ManyToOne
 	@JoinColumn(name = "party_id", referencedColumnName = "id", nullable = false)
 	private Party party;
-	
 	
 }
