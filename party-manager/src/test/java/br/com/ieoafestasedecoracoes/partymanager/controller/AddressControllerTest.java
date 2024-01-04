@@ -2,6 +2,7 @@ package br.com.ieoafestasedecoracoes.partymanager.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 import java.util.List;
 
@@ -14,8 +15,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -24,8 +28,11 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import br.com.ieoafestasedecoracoes.partymanager.domain.Address;
+import br.com.ieoafestasedecoracoes.partymanager.domain.Vendor;
+import br.com.ieoafestasedecoracoes.partymanager.infra.DomainErrorsValidation;
 import br.com.ieoafestasedecoracoes.partymanager.repository.AddressRepository;
 import br.com.ieoafestasedecoracoes.partymanager.to.AddressTO;
+import br.com.ieoafestasedecoracoes.partymanager.to.VendorTO;
 import jakarta.servlet.ServletException;
 
 // TODO adicionar os status code nas validações
@@ -94,7 +101,7 @@ class AddressControllerTest {
 	
 	@Test
 	void shouldUpdate() throws Exception {
-		AddressTO addressUpdated = new AddressTO(1, "Street Updated", "City Updated", "200", "Complement Updated");
+		AddressTO addressUpdated = new AddressTO(1, "Street Updated", "City Updated", "20020020", "Complement Updated");
 		addressUpdated.setId(addressToUpdate.getId());
 		String objectUpdatedJson = mapper.writeValueAsString(addressUpdated);
 		
@@ -105,7 +112,7 @@ class AddressControllerTest {
 	// TODO voltar o id de uma forma diferente
 	@Test
 	void shouldCreate() throws Exception {
-		AddressTO addressToCreate = new AddressTO(1, "Street Address Created", "City Address Created", "1234", "Complement Address Created");
+		AddressTO addressToCreate = new AddressTO(1, "Street Address Created", "City Address Created", "12345678", "Complement Address Created");
 		addressToCreate.setId(null);
 		String addressToCreateJson = mapper.writeValueAsString(addressToCreate);
 				
@@ -124,6 +131,39 @@ class AddressControllerTest {
 			.isInstanceOf(ServletException.class);
 	}
 	
+	@Test
+	void mandatoryFieldsShouldBeFilled() throws Exception {
+		AddressTO addressZipCode = new AddressTO(1, "", "", "", "");
+		List<DomainErrorsValidation> errors = List.of(
+				new DomainErrorsValidation("street", "rua deve ser preenchida"),
+				new DomainErrorsValidation("city", "cidade deve ser preenchida"),
+				new DomainErrorsValidation("zipCode", "CEP deve ser preenchido"),
+				new DomainErrorsValidation("zipCode", "cep deve estar no formato 99999999 ou 99999-999")
+				);
+		
+		MockHttpServletResponse response = basicControllerTest.executeCreate(mapper.writeValueAsString(addressZipCode), PATH, mockMvc);
+		
+		List<DomainErrorsValidation> errorsResponse = mapper.readValue(response.getContentAsString(), new TypeReference<List<DomainErrorsValidation>>() {});
+		
+		assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+		assertThat(errorsResponse).containsAll(errors);
+		
+	}
+	
+	@Test
+	void zipCodeShouldBeFilledCorrectly() throws Exception {
+		AddressTO addressZipCode = new AddressTO(1, "1234", "1243", "99999-99", "");
+		List<DomainErrorsValidation> errors = List.of(new DomainErrorsValidation("zipCode", "cep deve estar no formato 99999999 ou 99999-999"));
+		
+		MockHttpServletResponse response = basicControllerTest.executeCreate(mapper.writeValueAsString(addressZipCode), PATH, mockMvc);
+		
+		List<DomainErrorsValidation> errorsResponse = mapper.readValue(response.getContentAsString(), new TypeReference<List<DomainErrorsValidation>>() {});
+		
+		assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+		assertThat(errorsResponse).containsAll(errors);
+		
+	}
+	
 	private void deleteAllAddresses() throws Exception {
 		
 		List<Address> addresses = repository.findAll();
@@ -134,19 +174,20 @@ class AddressControllerTest {
 	
 	private void createAddresses() throws Exception {
 		
-		addressById = new AddressTO(1, "By Id Street", "By Id City", "123456", "Complement By Id");
-		addressToDelete = new AddressTO(1, "Street To Delete", "City To Delete", "404", "Complement To Delete");
-		addressToUpdate = new AddressTO(1, "Street To Update", "City To Update", "200", "Complement To Update");
+		addressById = new AddressTO(1, "By Id Street", "By Id City", "12345678", "Complement By Id");
+		addressToDelete = new AddressTO(1, "Street To Delete", "City To Delete", "40440440", "Complement To Delete");
+		addressToUpdate = new AddressTO(1, "Street To Update", "City To Update", "20020-020", "Complement To Update");
 		
-		Address address = repository.save(modelMapper.map(addressById, Address.class));
-		addressById.setId(address.getId());
-		addressByIdJson = mapper.writeValueAsString(addressById);
+		createAddress(addressById);
+		createAddress(addressToDelete);		
+		createAddress(addressToUpdate);
 		
-		address = repository.save(modelMapper.map(addressToDelete, Address.class));
-		addressToDelete.setId(address.getId());
-		
-		address = repository.save(modelMapper.map(addressToUpdate, Address.class));
-		addressToUpdate.setId(address.getId());
+		addressByIdJson = mapper.writeValueAsString(addressById);		
 	}
-
+	
+	private void createAddress(AddressTO addressTO) throws Exception {
+		Address address =  repository.save(modelMapper.map(addressTO, Address.class));
+		addressTO.setId(address.getId());
+	}
+	
 }

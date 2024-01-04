@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.ieoafestasedecoracoes.partymanager.service.AddressService;
 import br.com.ieoafestasedecoracoes.partymanager.to.AddressTO;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("addresses")
@@ -45,7 +46,7 @@ public class AddressController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<AddressTO> create(@RequestBody AddressTO addressTO) {
+	public ResponseEntity<AddressTO> create(@RequestBody @Valid AddressTO addressTO) {
 		return ResponseEntity.ok(service.create(addressTO));
 	}
 	
