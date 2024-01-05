@@ -36,6 +36,9 @@ public class Material {
 
 	@OneToMany(mappedBy = "material", cascade = CascadeType.REMOVE)
 	private List<PartyMaterial> partyMaterials = new ArrayList<>();
+	
+	@OneToMany(mappedBy = "material")
+	private List<DecorationMaterial> decorationMaterials = new ArrayList<>();
 
 	@ManyToOne
 	@JoinColumn(name = "company_id", nullable = false)

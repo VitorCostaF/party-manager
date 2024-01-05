@@ -6,14 +6,14 @@ import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+@NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
-@NoArgsConstructor
-public class PartyMaterialId implements Serializable {
-
+public class RentDecorationId implements Serializable {
+	
 	private static final long serialVersionUID = 1L;
 	
-	private Integer materialId;
+	private Integer decorationId;
 	private Integer partyId;
-
+	
 }

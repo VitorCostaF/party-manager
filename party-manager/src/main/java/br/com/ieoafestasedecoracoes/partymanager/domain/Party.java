@@ -33,7 +33,7 @@ public class Party {
 	
 	@ManyToOne
 	@JoinColumn(nullable = false)
-	private Client client;  
+	private Client client; 
 	
 	@ManyToOne
 	@JoinColumn(name = "address_id", nullable = false)
@@ -41,5 +41,8 @@ public class Party {
 	
 	@OneToMany(mappedBy = "party", cascade = CascadeType.REMOVE)
 	private List<PartyMaterial> partyMaterials = new ArrayList<>();
+	
+	@OneToMany(mappedBy = "party", cascade = CascadeType.REMOVE)
+	private List<RentDecoration> partyDecorations = new ArrayList<>();
 	
 }

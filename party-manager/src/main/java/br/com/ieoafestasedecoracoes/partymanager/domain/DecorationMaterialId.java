@@ -7,13 +7,13 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @AllArgsConstructor
-@EqualsAndHashCode
 @NoArgsConstructor
-public class PartyMaterialId implements Serializable {
-
+@EqualsAndHashCode
+public class DecorationMaterialId implements Serializable{
+	
 	private static final long serialVersionUID = 1L;
 	
+	private Integer decorationId;
 	private Integer materialId;
-	private Integer partyId;
-
+	
 }
