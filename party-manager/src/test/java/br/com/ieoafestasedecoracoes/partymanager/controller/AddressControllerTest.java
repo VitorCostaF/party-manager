@@ -2,7 +2,6 @@ package br.com.ieoafestasedecoracoes.partymanager.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 import java.util.List;
 
@@ -15,11 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
-import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -28,11 +24,9 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import br.com.ieoafestasedecoracoes.partymanager.domain.Address;
-import br.com.ieoafestasedecoracoes.partymanager.domain.Vendor;
 import br.com.ieoafestasedecoracoes.partymanager.infra.DomainErrorsValidation;
 import br.com.ieoafestasedecoracoes.partymanager.repository.AddressRepository;
 import br.com.ieoafestasedecoracoes.partymanager.to.AddressTO;
-import br.com.ieoafestasedecoracoes.partymanager.to.VendorTO;
 import jakarta.servlet.ServletException;
 
 // TODO adicionar os status code nas validações
