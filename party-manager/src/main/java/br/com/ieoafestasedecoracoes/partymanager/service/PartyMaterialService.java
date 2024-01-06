@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.ieoafestasedecoracoes.partymanager.domain.PartyMaterial;
-import br.com.ieoafestasedecoracoes.partymanager.domain.PartyMaterialId;
+import br.com.ieoafestasedecoracoes.partymanager.domain.id.PartyMaterialId;
 import br.com.ieoafestasedecoracoes.partymanager.repository.PartyMaterialRepository;
 import br.com.ieoafestasedecoracoes.partymanager.to.PartyMaterialTO;
 

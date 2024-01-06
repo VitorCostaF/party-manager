@@ -2,6 +2,7 @@ package br.com.ieoafestasedecoracoes.partymanager.domain;
 
 import java.time.LocalDate;
 
+import br.com.ieoafestasedecoracoes.partymanager.domain.id.PartyMaterialId;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;

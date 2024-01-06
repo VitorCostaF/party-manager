@@ -2,14 +2,17 @@ package br.com.ieoafestasedecoracoes.partymanager.domain;
 
 import java.time.LocalDate;
 
+import br.com.ieoafestasedecoracoes.partymanager.domain.id.RentDecorationId;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.IdClass;
 import jakarta.persistence.ManyToOne;
+import lombok.Data;
 
 @Entity
 @IdClass(RentDecorationId.class)
+@Data
 public class RentDecoration {
 	
 	@Id
