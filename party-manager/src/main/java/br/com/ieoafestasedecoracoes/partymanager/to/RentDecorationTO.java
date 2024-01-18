@@ -1,7 +1,8 @@
 package br.com.ieoafestasedecoracoes.partymanager.to;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
@@ -17,8 +18,13 @@ public class RentDecorationTO {
 	
 	private Integer partyId;	
 	private Integer decorationId;
-	private LocalDate startRentDate;
-	private LocalDate endRentDate;
+	
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm")
+	private LocalDateTime startRentDate;
+	
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm")
+	private LocalDateTime endRentDate;
+	
 	private Double price;
 
 }

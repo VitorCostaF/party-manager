@@ -1,13 +1,18 @@
 package br.com.ieoafestasedecoracoes.partymanager.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.com.ieoafestasedecoracoes.partymanager.domain.Decoration;
+import br.com.ieoafestasedecoracoes.partymanager.domain.Party;
 import br.com.ieoafestasedecoracoes.partymanager.domain.RentDecoration;
 import br.com.ieoafestasedecoracoes.partymanager.domain.id.RentDecorationId;
+import br.com.ieoafestasedecoracoes.partymanager.repository.DecorationRepository;
+import br.com.ieoafestasedecoracoes.partymanager.repository.PartyRepository;
 import br.com.ieoafestasedecoracoes.partymanager.repository.RentDecorationRepository;
 import br.com.ieoafestasedecoracoes.partymanager.to.RentDecorationTO;
 
@@ -16,6 +21,12 @@ public class RentDecorationService {
 
 	@Autowired
 	private RentDecorationRepository repository;
+	
+	@Autowired
+	private PartyRepository partyRepository;
+	
+	@Autowired
+	private DecorationRepository decorationRepository;
 	
 	@Autowired
 	private ModelMapper mapper;
@@ -52,15 +63,25 @@ public class RentDecorationService {
 	}
 	
 	public RentDecorationTO create(RentDecorationTO rentDecoration) {
-		RentDecoration decorationMaterialBD = mapper.map(rentDecoration, RentDecoration.class);
+		RentDecoration rentDecorationDB = mapper.map(rentDecoration, RentDecoration.class);
 		
-		decorationMaterialBD.setDecorationId(null);
-		decorationMaterialBD.setPartyId(null);
+		Optional<Party> party =  partyRepository.findById(rentDecoration.getPartyId());
+		if(!party.isPresent()) {
+			throw new RuntimeException("Party to RentDecoration not found");
+		}
 		
-		repository.save(decorationMaterialBD);
+		Optional<Decoration> decoration =  decorationRepository.findById(rentDecoration.getDecorationId());
+		if(!decoration.isPresent()) {
+			throw new RuntimeException("Decoration to RentDecoration not found");
+		}
 		
-		rentDecoration.setDecorationId(decorationMaterialBD.getDecorationId());
-		rentDecoration.setPartyId(decorationMaterialBD.getPartyId());
+		rentDecorationDB.setDecoration(decoration.get());
+		rentDecorationDB.setParty(party.get());
+		
+		repository.save(rentDecorationDB);
+		
+		rentDecoration.setDecorationId(rentDecorationDB.getDecorationId());
+		rentDecoration.setPartyId(rentDecorationDB.getPartyId());
 				
 		return rentDecoration;
 	}
