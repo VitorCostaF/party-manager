@@ -31,6 +31,10 @@ public class DecorationService {
 		return toDecorationTOList(repository.findAll());
 	}
 	
+	public List<DecorationTO> findByDescription(String description) {
+		return toDecorationTOList(repository.findByNameContainingIgnoreCaseOrThemeContainingIgnoreCase(description, description));
+	}
+	
 	public void delete(Integer id) {
 		repository.deleteById(id);
 	}

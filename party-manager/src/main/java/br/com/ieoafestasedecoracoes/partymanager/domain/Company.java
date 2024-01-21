@@ -3,7 +3,6 @@ package br.com.ieoafestasedecoracoes.partymanager.domain;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.ieoafestasedecoracoes.partymanager.to.CompanyTO;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -53,13 +52,8 @@ public class Company {
 	
 	@OneToMany(mappedBy = "company", cascade = CascadeType.REMOVE)
 	private List<Material> materials;
-
-	public Company(CompanyTO companyTO) {
-		if (companyTO != null) {
-			this.id = companyTO.getId();
-			this.name = companyTO.getName();
-			this.document = companyTO.getDocument();
-		}
-	}
+	
+	@OneToMany(mappedBy = "company", cascade = CascadeType.REMOVE)
+	private List<Decoration> decorations;
 
 }

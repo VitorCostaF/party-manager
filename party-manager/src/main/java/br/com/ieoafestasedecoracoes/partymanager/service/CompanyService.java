@@ -36,7 +36,7 @@ public class CompanyService {
 	}
 
 	public CompanyTO create(CompanyTO companyTO) {
-		Company company = new Company(companyTO);
+		Company company = mapper.map(companyTO, Company.class);
 		company.setId(null);
 		repository.save(company);
 		return mapper.map(company, CompanyTO.class);

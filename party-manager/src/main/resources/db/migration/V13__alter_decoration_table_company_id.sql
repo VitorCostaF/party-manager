@@ -1,0 +1,1 @@
+ALTER TABLE decoration ADD COLUMN company_id INT not null;

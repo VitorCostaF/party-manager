@@ -6,6 +6,10 @@ import java.util.List;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import lombok.AllArgsConstructor;
@@ -27,9 +31,19 @@ public class Decoration {
 	private Double price;
 	private Double discount;
 	
+	@ManyToMany
+	@JoinTable(name = "decoration_category",
+			joinColumns = @JoinColumn(name = "decoration_id"),
+			inverseJoinColumns = @JoinColumn(name = "category_id"))
+	private List<Category> categories; 
+	
 	@OneToMany(mappedBy = "decoration")
 	private List<DecorationMaterial> decorationMaterials = new ArrayList<>();
 	
 	@OneToMany(mappedBy = "decoration")
 	private List<RentDecoration> partyDecorations = new ArrayList<>();
+	
+	@ManyToOne(optional = false)
+	private Company company;
+	
 }

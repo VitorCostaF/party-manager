@@ -28,6 +28,11 @@ public class DecorationController {
 		return ResponseEntity.ok(service.findById(id));
 	}
 	
+	@GetMapping("/description/{description}")
+	public ResponseEntity<List<DecorationTO>> findByDescription(@PathVariable String description) {
+		return ResponseEntity.ok(service.findByDescription(description));
+	}
+	
 	@GetMapping
 	public ResponseEntity<List<DecorationTO>> findAll() {
 		return ResponseEntity.ok(service.findAll());
