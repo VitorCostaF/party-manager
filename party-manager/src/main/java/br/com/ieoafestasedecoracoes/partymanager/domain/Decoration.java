@@ -35,7 +35,7 @@ public class Decoration {
 	@JoinTable(name = "decoration_category",
 			joinColumns = @JoinColumn(name = "decoration_id"),
 			inverseJoinColumns = @JoinColumn(name = "category_id"))
-	private List<Category> categories; 
+	private List<Category> categories = new ArrayList<>(); 
 	
 	@OneToMany(mappedBy = "decoration")
 	private List<DecorationMaterial> decorationMaterials = new ArrayList<>();
