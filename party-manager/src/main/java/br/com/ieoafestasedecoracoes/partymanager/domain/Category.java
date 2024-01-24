@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class Category {
+public class Category implements DomainObjetctInterface {
 
 	@Id
 	@GeneratedValue(generator = "category_seq")

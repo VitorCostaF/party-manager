@@ -1,0 +1,1 @@
+ALTER TABLE decoration ADD CONSTRAINT decoration_company_fk FOREIGN KEY (company_id) REFERENCES company (id);

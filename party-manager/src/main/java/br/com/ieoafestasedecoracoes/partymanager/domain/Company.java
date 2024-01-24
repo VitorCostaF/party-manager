@@ -24,7 +24,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 @EqualsAndHashCode(of = "id", callSuper = false)
-public class Company {
+public class Company implements DomainObjetctInterface {
 
 	@Id
 	@GeneratedValue(generator = "company_seq")

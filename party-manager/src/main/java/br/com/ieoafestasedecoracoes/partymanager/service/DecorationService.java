@@ -14,6 +14,7 @@ import br.com.ieoafestasedecoracoes.partymanager.repository.CompanyRepository;
 import br.com.ieoafestasedecoracoes.partymanager.repository.DecorationRepository;
 import br.com.ieoafestasedecoracoes.partymanager.to.CategoryTO;
 import br.com.ieoafestasedecoracoes.partymanager.to.DecorationTO;
+import br.com.ieoafestasedecoracoes.partymanager.validation.EntityDependencyValidation;
 
 @Service
 public class DecorationService {
@@ -57,7 +58,8 @@ public class DecorationService {
 			throw new RuntimeException("Decoration not found to be updated");
 		}
 		
-		validCategories(decoration.getCategories());
+		EntityDependencyValidation.validate(companyRepository, decoration.getCompanyId(), "Company", "Decoration");
+		decoration.getCategories().forEach(c -> EntityDependencyValidation.validate(categoryRepository, c.getId(), "Category", "Decoration"));
 		
 		decoration.setId(id);
 		mapper.map(decoration, decorationDB);	
@@ -70,14 +72,9 @@ public class DecorationService {
 		Decoration decorationBD = mapper.map(decoration, Decoration.class);
 		
 		validCategories(decoration.getCategories());
-				
-		Optional<Company> company = companyRepository.findById(decoration.getCompanyId());
 		
-		if(!company.isPresent()) {
-			throw new RuntimeException("Company not found for Decoration");
-		}
-		
-		decorationBD.setCompany(company.get());
+		EntityDependencyValidation.validate(companyRepository, decoration.getCompanyId(), "Company", "Decoration");
+		decoration.getCategories().forEach(c -> EntityDependencyValidation.validate(categoryRepository, c.getId(), "Category", "Decoration"));
 		
 		decorationBD.setId(null);
 		repository.save(decorationBD);
