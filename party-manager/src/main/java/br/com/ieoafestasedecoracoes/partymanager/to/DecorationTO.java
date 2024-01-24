@@ -1,5 +1,8 @@
 package br.com.ieoafestasedecoracoes.partymanager.to;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
@@ -10,7 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-@JsonInclude(value = Include.NON_NULL)
+@JsonInclude(value = Include.NON_EMPTY)
 public class DecorationTO {
 
 	private Integer id;
@@ -18,7 +21,7 @@ public class DecorationTO {
 	private String theme;
 	private Double price;
 	private Double discount;
-	private Integer categoryId;
 	private Integer companyId;
+	private List<CategoryTO> categories = new ArrayList<>();
 	
 }

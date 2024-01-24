@@ -7,12 +7,12 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import br.com.ieoafestasedecoracoes.partymanager.domain.Category;
 import br.com.ieoafestasedecoracoes.partymanager.domain.Company;
 import br.com.ieoafestasedecoracoes.partymanager.domain.Decoration;
 import br.com.ieoafestasedecoracoes.partymanager.repository.CategoryRepository;
 import br.com.ieoafestasedecoracoes.partymanager.repository.CompanyRepository;
 import br.com.ieoafestasedecoracoes.partymanager.repository.DecorationRepository;
+import br.com.ieoafestasedecoracoes.partymanager.to.CategoryTO;
 import br.com.ieoafestasedecoracoes.partymanager.to.DecorationTO;
 
 @Service
@@ -52,10 +52,12 @@ public class DecorationService {
 	
 	public DecorationTO update(DecorationTO decoration, Integer id) {
 		Decoration decorationDB = repository.findById(id).orElse(null);
-		
+				
 		if(decorationDB == null) {
 			throw new RuntimeException("Decoration not found to be updated");
 		}
+		
+		validCategories(decoration.getCategories());
 		
 		decoration.setId(id);
 		mapper.map(decoration, decorationDB);	
@@ -67,19 +69,14 @@ public class DecorationService {
 	public DecorationTO create(DecorationTO decoration) {
 		Decoration decorationBD = mapper.map(decoration, Decoration.class);
 		
-		Optional<Category> category = categoryRepository.findById(decoration.getCategoryId());
-		
-		if(!category.isPresent()) {
-			throw new RuntimeException("Category not found for Decoration");
-		}
-		
+		validCategories(decoration.getCategories());
+				
 		Optional<Company> company = companyRepository.findById(decoration.getCompanyId());
 		
 		if(!company.isPresent()) {
 			throw new RuntimeException("Company not found for Decoration");
 		}
 		
-		decorationBD.getCategories().add(category.get());
 		decorationBD.setCompany(company.get());
 		
 		decorationBD.setId(null);
@@ -88,6 +85,16 @@ public class DecorationService {
 		decoration.setId(decorationBD.getId());
 		
 		return decoration;
+	}
+	
+	private void validCategories(List<CategoryTO> categoriesTO) {
+		categoriesTO.stream().forEach(this::validCategory);
+	}
+	
+	private void validCategory(CategoryTO categoryTO) {
+		if(!categoryRepository.existsById(categoryTO.getId())) {
+			throw new RuntimeException("Categories not found for Decoration");
+		}
 	}
 	
 	private List<DecorationTO> toDecorationTOList(List<Decoration> decorations) {
