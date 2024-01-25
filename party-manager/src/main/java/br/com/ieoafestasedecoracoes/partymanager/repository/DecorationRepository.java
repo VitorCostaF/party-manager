@@ -9,5 +9,6 @@ import br.com.ieoafestasedecoracoes.partymanager.domain.Decoration;
 public interface DecorationRepository extends JpaRepository<Decoration, Integer> {
 	
 	List<Decoration> findByNameContainingIgnoreCaseOrThemeContainingIgnoreCase(String name, String theme);
+	List<Decoration> findByCategoriesId(Integer categoryId);
 
 }

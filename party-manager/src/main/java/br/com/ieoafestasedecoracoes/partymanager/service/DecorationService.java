@@ -1,13 +1,11 @@
 package br.com.ieoafestasedecoracoes.partymanager.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import br.com.ieoafestasedecoracoes.partymanager.domain.Company;
 import br.com.ieoafestasedecoracoes.partymanager.domain.Decoration;
 import br.com.ieoafestasedecoracoes.partymanager.repository.CategoryRepository;
 import br.com.ieoafestasedecoracoes.partymanager.repository.CompanyRepository;
@@ -47,6 +45,10 @@ public class DecorationService {
 		return toDecorationTOList(repository.findByNameContainingIgnoreCaseOrThemeContainingIgnoreCase(description, description));
 	}
 	
+	public List<DecorationTO> findByCategory(Integer categoryId) {
+		return toDecorationTOList(repository.findByCategoriesId(categoryId));
+	}
+	
 	public void delete(Integer id) {
 		repository.deleteById(id);
 	}
@@ -71,8 +73,6 @@ public class DecorationService {
 	public DecorationTO create(DecorationTO decoration) {
 		Decoration decorationBD = mapper.map(decoration, Decoration.class);
 		
-		validCategories(decoration.getCategories());
-		
 		EntityDependencyValidation.validate(companyRepository, decoration.getCompanyId(), "Company", "Decoration");
 		decoration.getCategories().forEach(c -> EntityDependencyValidation.validate(categoryRepository, c.getId(), "Category", "Decoration"));
 		
@@ -82,16 +82,6 @@ public class DecorationService {
 		decoration.setId(decorationBD.getId());
 		
 		return decoration;
-	}
-	
-	private void validCategories(List<CategoryTO> categoriesTO) {
-		categoriesTO.stream().forEach(this::validCategory);
-	}
-	
-	private void validCategory(CategoryTO categoryTO) {
-		if(!categoryRepository.existsById(categoryTO.getId())) {
-			throw new RuntimeException("Categories not found for Decoration");
-		}
 	}
 	
 	private List<DecorationTO> toDecorationTOList(List<Decoration> decorations) {

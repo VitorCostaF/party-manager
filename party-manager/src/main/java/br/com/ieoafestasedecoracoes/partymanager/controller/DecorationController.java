@@ -33,6 +33,11 @@ public class DecorationController {
 		return ResponseEntity.ok(service.findByDescription(description));
 	}
 	
+	@GetMapping("/category/{categoryId}")
+	public ResponseEntity<List<DecorationTO>> findByCategory(@PathVariable Integer categoryId) {
+		return ResponseEntity.ok(service.findByCategory(categoryId));
+	}
+	
 	@GetMapping
 	public ResponseEntity<List<DecorationTO>> findAll() {
 		return ResponseEntity.ok(service.findAll());
