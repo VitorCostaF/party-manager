@@ -41,7 +41,7 @@ public class Decoration {
 	private List<DecorationMaterial> decorationMaterials = new ArrayList<>();
 	
 	@OneToMany(mappedBy = "decoration")
-	private List<RentDecoration> partyDecorations = new ArrayList<>();
+	private List<RentDecoration> rentDecorations = new ArrayList<>();
 	
 	@ManyToOne(optional = false)
 	private Company company;

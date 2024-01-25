@@ -43,6 +43,11 @@ public class DecorationController {
 		return ResponseEntity.ok(service.findByCompany(companyId));
 	}
 	
+	@GetMapping("/hot")
+	public ResponseEntity<List<DecorationTO>> findHotDecorations() {
+		return ResponseEntity.ok(service.findHotDecorations());
+	}
+	
 	@GetMapping
 	public ResponseEntity<List<DecorationTO>> findAll() {
 		return ResponseEntity.ok(service.findAll());
