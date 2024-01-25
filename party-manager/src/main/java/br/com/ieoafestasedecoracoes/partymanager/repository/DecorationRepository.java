@@ -10,5 +10,6 @@ public interface DecorationRepository extends JpaRepository<Decoration, Integer>
 	
 	List<Decoration> findByNameContainingIgnoreCaseOrThemeContainingIgnoreCase(String name, String theme);
 	List<Decoration> findByCategoriesId(Integer categoryId);
+	List<Decoration> findByCompanyId(Integer compantyId);
 
 }

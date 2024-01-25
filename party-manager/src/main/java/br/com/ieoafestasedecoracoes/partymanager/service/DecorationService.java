@@ -49,6 +49,10 @@ public class DecorationService {
 		return toDecorationTOList(repository.findByCategoriesId(categoryId));
 	}
 	
+	public List<DecorationTO> findByCompany(Integer companyId) {
+		return toDecorationTOList(repository.findByCompanyId(companyId));
+	}
+	
 	public void delete(Integer id) {
 		repository.deleteById(id);
 	}
