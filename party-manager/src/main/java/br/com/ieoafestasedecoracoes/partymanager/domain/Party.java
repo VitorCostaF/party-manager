@@ -21,7 +21,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class Party {
+public class Party implements DomainObjetctInterface {
 
 	@Id
 	@GeneratedValue(generator = "party_seq")

@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class Decoration {
+public class Decoration implements DomainObjetctInterface {
 
 	@Id
 	@GeneratedValue(generator = "decoration_seq")

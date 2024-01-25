@@ -1,7 +1,6 @@
 package br.com.ieoafestasedecoracoes.partymanager.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +14,7 @@ import br.com.ieoafestasedecoracoes.partymanager.repository.DecorationRepository
 import br.com.ieoafestasedecoracoes.partymanager.repository.PartyRepository;
 import br.com.ieoafestasedecoracoes.partymanager.repository.RentDecorationRepository;
 import br.com.ieoafestasedecoracoes.partymanager.to.RentDecorationTO;
+import br.com.ieoafestasedecoracoes.partymanager.validation.EntityDependencyValidation;
 
 @Service
 public class RentDecorationService {
@@ -64,25 +64,19 @@ public class RentDecorationService {
 	
 	public RentDecorationTO create(RentDecorationTO rentDecoration) {
 		RentDecoration rentDecorationDB = mapper.map(rentDecoration, RentDecoration.class);
+
+		Decoration decoration = EntityDependencyValidation.validate(decorationRepository,
+				rentDecoration.getDecorationId(), "Decoration", "RentDecoration");
 		
-		Optional<Party> party =  partyRepository.findById(rentDecoration.getPartyId());
-		if(!party.isPresent()) {
-			throw new RuntimeException("Party to RentDecoration not found");
-		}
-		
-		Optional<Decoration> decoration =  decorationRepository.findById(rentDecoration.getDecorationId());
-		if(!decoration.isPresent()) {
-			throw new RuntimeException("Decoration to RentDecoration not found");
-		}
-		
-		rentDecorationDB.setDecoration(decoration.get());
-		rentDecorationDB.setParty(party.get());
-		
+		Party party = EntityDependencyValidation.validate(partyRepository, rentDecoration.getPartyId(), "Party",
+				"RentDecoration");
+
+		rentDecorationDB.setDecoration(decoration);
+		rentDecorationDB.setParty(party);
+		rentDecorationDB.setPrice(decoration.getPrice() * (1 - decoration.getDiscount()));
+
 		repository.save(rentDecorationDB);
-		
-		rentDecoration.setDecorationId(rentDecorationDB.getDecorationId());
-		rentDecoration.setPartyId(rentDecorationDB.getPartyId());
-				
+
 		return rentDecoration;
 	}
 	

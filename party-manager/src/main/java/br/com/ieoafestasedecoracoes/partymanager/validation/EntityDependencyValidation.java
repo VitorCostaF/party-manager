@@ -9,11 +9,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class EntityDependencyValidation {
 
-	public static void validate(JpaRepository<? extends DomainObjetctInterface, Integer> repository, Integer id,
+	public static <T extends DomainObjetctInterface> T validate(JpaRepository<T, Integer> repository, Integer id,
 			String weakEntityName, String strongEntityName) {
-		if (!repository.existsById(id)) {
+		T entity = repository.findById(id).orElse(null);
+		if (entity == null) {
 			throw new RuntimeException(weakEntityName + " with id " + id + " not found for " + strongEntityName);
 		}
+		return entity;
 	}
 
 }

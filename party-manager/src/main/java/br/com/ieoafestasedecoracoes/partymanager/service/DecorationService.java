@@ -7,10 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.ieoafestasedecoracoes.partymanager.domain.Decoration;
+import br.com.ieoafestasedecoracoes.partymanager.domain.Party;
 import br.com.ieoafestasedecoracoes.partymanager.repository.CategoryRepository;
 import br.com.ieoafestasedecoracoes.partymanager.repository.CompanyRepository;
 import br.com.ieoafestasedecoracoes.partymanager.repository.DecorationRepository;
+import br.com.ieoafestasedecoracoes.partymanager.repository.PartyRepository;
 import br.com.ieoafestasedecoracoes.partymanager.to.DecorationTO;
+import br.com.ieoafestasedecoracoes.partymanager.to.RentDecorationTO;
 import br.com.ieoafestasedecoracoes.partymanager.validation.EntityDependencyValidation;
 
 @Service
@@ -24,6 +27,12 @@ public class DecorationService {
 	
 	@Autowired
 	private CompanyRepository companyRepository;
+	
+	@Autowired
+	private PartyRepository partyRepository;
+	
+	@Autowired
+	private RentDecorationService rentDecorationService;
 	
 	@Autowired
 	private ModelMapper mapper;
