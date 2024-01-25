@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.ieoafestasedecoracoes.partymanager.domain.Vendor;
 import br.com.ieoafestasedecoracoes.partymanager.service.VendorService;
 import br.com.ieoafestasedecoracoes.partymanager.to.VendorTO;
 import jakarta.validation.Valid;

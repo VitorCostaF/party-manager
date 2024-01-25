@@ -10,7 +10,6 @@ import br.com.ieoafestasedecoracoes.partymanager.domain.Decoration;
 import br.com.ieoafestasedecoracoes.partymanager.repository.CategoryRepository;
 import br.com.ieoafestasedecoracoes.partymanager.repository.CompanyRepository;
 import br.com.ieoafestasedecoracoes.partymanager.repository.DecorationRepository;
-import br.com.ieoafestasedecoracoes.partymanager.to.CategoryTO;
 import br.com.ieoafestasedecoracoes.partymanager.to.DecorationTO;
 import br.com.ieoafestasedecoracoes.partymanager.validation.EntityDependencyValidation;
 
