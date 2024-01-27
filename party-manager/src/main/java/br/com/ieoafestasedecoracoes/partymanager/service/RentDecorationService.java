@@ -89,8 +89,13 @@ public class RentDecorationService {
 	}
 	
 	private List<RentDecorationTO> toRentDecorationTOList(List<RentDecoration> rentDecoration) {
-		return rentDecoration.stream().map(v -> mapper.map(v, RentDecorationTO.class)).toList();
+		return rentDecoration.stream()
+				.map(v -> 
+					mapper.typeMap(RentDecoration.class, RentDecorationTO.class)
+						.addMapping(RentDecoration::getDecorationId, RentDecorationTO::setDecorationId)
+						.addMapping(RentDecoration::getPartyId, RentDecorationTO::setPartyId)
+						.map(v)
+				).toList();
 	}
 
-	
 }
