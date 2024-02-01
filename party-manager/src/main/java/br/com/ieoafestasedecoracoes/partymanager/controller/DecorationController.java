@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.ieoafestasedecoracoes.partymanager.domain.Province;
 import br.com.ieoafestasedecoracoes.partymanager.service.DecorationService;
 import br.com.ieoafestasedecoracoes.partymanager.to.DecorationTO;
 
@@ -46,6 +47,11 @@ public class DecorationController {
 	@GetMapping("/hot")
 	public ResponseEntity<List<DecorationTO>> findHotDecorations() {
 		return ResponseEntity.ok(service.findHotDecorations());
+	}
+	
+	@GetMapping("/province/{province}")
+	public ResponseEntity<List<DecorationTO>> findByProvince(@PathVariable Province province) {
+		return ResponseEntity.ok(service.findByProvince(province));
 	}
 	
 	@GetMapping

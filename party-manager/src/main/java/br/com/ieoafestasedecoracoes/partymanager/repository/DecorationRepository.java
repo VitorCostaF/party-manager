@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import br.com.ieoafestasedecoracoes.partymanager.domain.Decoration;
+import br.com.ieoafestasedecoracoes.partymanager.domain.Province;
 
 public interface DecorationRepository extends JpaRepository<Decoration, Integer> {
 	
@@ -24,5 +25,7 @@ public interface DecorationRepository extends JpaRepository<Decoration, Integer>
 			ORDER BY t.rendDate DESC, t.cont DESC
 			""")
 	List<Decoration> findHotDecorations();
+	
+	List<Decoration> findByCompanyAddressProvince(Province province);
 
 }

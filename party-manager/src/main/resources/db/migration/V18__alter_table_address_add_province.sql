@@ -1,0 +1,1 @@
+ALTER TABLE address ADD COLUMN province VARCHAR(40) NOT NULL;

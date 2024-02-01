@@ -13,6 +13,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.SequenceGenerator;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -55,5 +56,9 @@ public class Company implements DomainObjetctInterface {
 	
 	@OneToMany(mappedBy = "company", cascade = CascadeType.REMOVE)
 	private List<Decoration> decorations;
+	
+	@OneToOne(cascade = CascadeType.REMOVE)
+	@JoinColumn(name = "address_id", nullable = false)
+	private Address address;
 
 }
