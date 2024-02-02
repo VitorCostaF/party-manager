@@ -1,44 +1,35 @@
 package br.com.ieoafestasedecoracoes.partymanager.domain;
 
-import lombok.Getter;
+import java.util.List;
 
-@Getter
-public enum Province {
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
+public class Province {
 	
-	ACRE("AC", "Acre"),
-	ALAGOAS("AL", "Alagoas"),
-	AMAPA("AP", "Amapá"),
-	AMAZONAS("AM", "Amazonas"),
-	BAHIA("BA", "Bahia"),
-	CEARA("CE", "Ceará"),
-	ESPIRITO_SANTO("ES", "Espírito Santo"),
-	GOIAS("GO", "Goiás"),
-	MARANHAO("MA", "Maranhão"),
-	MATO_GROSSO("MT", "Mato Grosso"),
-	MATO_GROSSO_DO_SUL("MS", "Mato Grosso do Sul"),
-	MINAS_GERAIS("MG", "Minas Gerais"),
-	PARA("PA", "Pará"),
-	PARAIBA("PB", "Paraíba"),
-	PARANA("PR", "Paraná"),
-	PERNAMBUCO("PE", "Pernambuco"),
-	PIAUI("PI", "Piauí"),
-	RIO_DE_JANEIRO("RJ", "Rio de Janeiro"),
-	RIO_GRANDE_DO_NORTE("RN", "Rio Grande do Norte"),
-	RIO_GRANDE_DO_SUL("RS", "Rio Grande do Sul"),
-	RONDONIA("RO", "Rondônia"),
-	RORAIMA("RR", "Roraima"),
-	SANTA_CATARINA("SC", "Santa Catarina"),
-	SAO_PAULO("SP", "São Paulo"),
-	SERGIPE("SE", "Sergipe"),
-	TOCANTINS("TO", "Tocantins"),
-	DISTRITO_FEDERAL("DF", "Distrito Federal");
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
 	
-	private final String name;
-	private final String acronym;
+	@Column(nullable = false)
+	private String name;
 	
-	Province(String name, String acronym) {
-		this.name = name;
-		this.acronym = acronym;
-	}
+	private String acronym;
+	private Integer externalApiId;
+	
+	@OneToOne(mappedBy = "province", fetch = FetchType.LAZY)
+	private List<Address> addresses;
 	
 }
