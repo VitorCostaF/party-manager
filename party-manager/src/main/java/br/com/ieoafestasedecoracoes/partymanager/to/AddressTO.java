@@ -29,4 +29,6 @@ public class AddressTO implements DomainObjectInteface {
 	
 	private String complement;
 	
+	private ProvinceTO province;
+	
 }

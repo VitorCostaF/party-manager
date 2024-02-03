@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.ieoafestasedecoracoes.partymanager.domain.Decoration;
-import br.com.ieoafestasedecoracoes.partymanager.domain.Province;
 import br.com.ieoafestasedecoracoes.partymanager.repository.CategoryRepository;
 import br.com.ieoafestasedecoracoes.partymanager.repository.CompanyRepository;
 import br.com.ieoafestasedecoracoes.partymanager.repository.DecorationRepository;
@@ -57,8 +56,8 @@ public class DecorationService {
 		return toDecorationTOList(repository.findHotDecorations());
 	}
 	
-	public List<DecorationTO> findByProvince(Province province) {
-		return toDecorationTOList(repository.findByCompanyAddressProvince(province));
+	public List<DecorationTO> findByProvince(Integer provinceId) {
+		return toDecorationTOList(repository.findByCompanyAddressProvinceId(provinceId));
 	}
 	
 	public void delete(Integer id) {
