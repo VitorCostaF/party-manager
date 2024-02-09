@@ -42,7 +42,7 @@ public class Address {
 	@JoinColumn(nullable = false)
 	private Province province;
 	
-	@OneToMany(mappedBy = "address", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "address", cascade = CascadeType.REMOVE)
 	private List<Party> parties = new ArrayList<>();
 	
 	@OneToOne(mappedBy = "address", fetch = FetchType.LAZY)
