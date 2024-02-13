@@ -1,5 +1,6 @@
 package br.com.ieoafestasedecoracoes.partymanager.to;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -25,6 +26,6 @@ public class RentDecorationTO {
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm")
 	private LocalDateTime endRentDate;
 	
-	private Double price;
+	private BigDecimal price;
 
 }

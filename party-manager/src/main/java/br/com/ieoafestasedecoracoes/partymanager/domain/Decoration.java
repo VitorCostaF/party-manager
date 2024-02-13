@@ -1,5 +1,6 @@
 package br.com.ieoafestasedecoracoes.partymanager.domain;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,8 +30,8 @@ public class Decoration implements DomainObjetctInterface {
 	private Integer id;
 	private String name;
 	private String theme;
-	private Double price;
-	private Double discount;
+	private BigDecimal price;
+	private BigDecimal discount;
 	
 	@ManyToMany
 	@JoinTable(name = "decoration_category",

@@ -1,5 +1,6 @@
 package br.com.ieoafestasedecoracoes.partymanager.to;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,8 +20,8 @@ public class DecorationTO {
 	private Integer id;
 	private String name;
 	private String theme;
-	private Double price;
-	private Double discount;
+	private BigDecimal price;
+	private BigDecimal discount;
 	private Integer companyId;
 	private List<CategoryTO> categories = new ArrayList<>();
 	

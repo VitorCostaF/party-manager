@@ -1,5 +1,6 @@
 package br.com.ieoafestasedecoracoes.partymanager.service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
@@ -73,7 +74,7 @@ public class RentDecorationService {
 
 		rentDecorationDB.setDecoration(decoration);
 		rentDecorationDB.setParty(party);
-		rentDecorationDB.setPrice(decoration.getPrice() * (1 - decoration.getDiscount()));
+		rentDecorationDB.setPrice(decoration.getPrice().multiply((BigDecimal.ONE.subtract(decoration.getDiscount()))));
 
 		repository.save(rentDecorationDB);
 

@@ -1,5 +1,6 @@
 package br.com.ieoafestasedecoracoes.partymanager.domain;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import br.com.ieoafestasedecoracoes.partymanager.domain.id.RentDecorationId;
@@ -31,7 +32,7 @@ public class RentDecoration {
 	private LocalDateTime endRentDate;
 	
 	@Column(nullable = false)
-	private Double price;
+	private BigDecimal price;
 	
 	@ManyToOne(optional = false)
 	@MapsId("party_id")
