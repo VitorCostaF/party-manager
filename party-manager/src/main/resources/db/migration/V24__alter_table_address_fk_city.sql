@@ -1,0 +1,1 @@
+ALTER TABLE address ADD CONSTRAINT address_city_fk FOREIGN KEY (city_id) REFERENCES city (id);

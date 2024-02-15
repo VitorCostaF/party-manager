@@ -1,0 +1,2 @@
+ALTER TABLE address RENAME COLUMN city TO city_id;
+ALTER TABLE address MODIFY COLUMN city_id INT;
