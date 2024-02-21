@@ -3,11 +3,12 @@ package br.com.ieoafestasedecoracoes.partymanager.repository;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 
 import br.com.ieoafestasedecoracoes.partymanager.domain.Decoration;
 
-public interface DecorationRepository extends JpaRepository<Decoration, Integer> {
+public interface DecorationRepository extends JpaRepository<Decoration, Integer>, JpaSpecificationExecutor<Decoration> {
 	
 	List<Decoration> findByNameContainingIgnoreCaseOrThemeContainingIgnoreCase(String name, String theme);
 	List<Decoration> findByCategoriesId(Integer categoryId);

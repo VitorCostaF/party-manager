@@ -1,6 +1,7 @@
 package br.com.ieoafestasedecoracoes.partymanager.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.ieoafestasedecoracoes.partymanager.service.DecorationService;
@@ -29,8 +31,8 @@ public class DecorationController {
 	}
 	
 	@GetMapping("/description/{description}")
-	public ResponseEntity<List<DecorationTO>> findByDescription(@PathVariable String description) {
-		return ResponseEntity.ok(service.findByDescription(description));
+	public ResponseEntity<List<DecorationTO>> findByDescription(@PathVariable String description, @RequestParam Map<String,String> params) {
+		return ResponseEntity.ok(service.findByDescription(description, params));
 	}
 	
 	@GetMapping("/category/{categoryId}")

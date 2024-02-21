@@ -1,9 +1,12 @@
 package br.com.ieoafestasedecoracoes.partymanager.service;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import br.com.ieoafestasedecoracoes.partymanager.domain.Decoration;
@@ -40,8 +43,28 @@ public class DecorationService {
 		return toDecorationTOList(repository.findAll());
 	}
 	
-	public List<DecorationTO> findByDescription(String description) {
-		return toDecorationTOList(repository.findByNameContainingIgnoreCaseOrThemeContainingIgnoreCase(description, description));
+	public List<DecorationTO> findByDescription(String description, Map<String,String> params) {
+		Specification<Decoration> specification = Specification.where(DecorationSpecification.decorationDescription(description));
+		
+		if( params.get("provinceId") != null && !params.get("provinceId").isEmpty()) {
+			specification = specification.and(DecorationSpecification.hasProvince(Integer.valueOf(params.get("provinceId"))));
+		}
+		
+		if( params.get("cityId") != null && !params.get("cityId").isEmpty()) {
+			specification = specification.and(DecorationSpecification.hasCity(Integer.valueOf(params.get("cityId"))));
+		}
+		
+		if( params.get("initialValue") != null && !params.get("initialValue").isEmpty()) {
+			specification = specification.and(DecorationSpecification.hasInitialValue(new BigDecimal(params.get("initialValue"))));
+		}
+		
+		if( params.get("finalValue") != null && !params.get("finalValue").isEmpty()) {
+			specification = specification.and(DecorationSpecification.hasFinalValue(new BigDecimal(params.get("finalValue"))));
+		}
+		
+		
+		return toDecorationTOList(repository.findAll(specification));
+		
 	}
 	
 	public List<DecorationTO> findByCategory(Integer categoryId) {
@@ -97,6 +120,35 @@ public class DecorationService {
 	
 	private List<DecorationTO> toDecorationTOList(List<Decoration> decorations) {
 		return decorations.stream().map(v -> mapper.map(v, DecorationTO.class)).toList();
+	}
+	
+	private class DecorationSpecification {
+		
+		public static Specification<Decoration> hasProvince(Integer provinceId) {
+			return (root, query, criteriaBuilder) -> 
+				criteriaBuilder.equal(root.get("company").get("address").get("province").get("id"), provinceId);
+		}
+		
+		public static Specification<Decoration> hasCity(Integer cityId) {
+			return (root, query, criteriaBuilder) -> 
+				criteriaBuilder.equal(root.get("company").get("address").get("city").get("id"), cityId);
+		}
+		
+		public static Specification<Decoration> hasInitialValue(BigDecimal initialValue) {
+			return (root, query, criteriaBuilder) -> 
+				criteriaBuilder.ge(root.get("price"), initialValue);
+		}
+		
+		public static Specification<Decoration> hasFinalValue(BigDecimal finalValue) {
+			return (root, query, criteriaBuilder) -> 
+				criteriaBuilder.le(root.get("price"), finalValue);
+		}
+		
+		public static Specification<Decoration> decorationDescription(String name) {
+			return (root, query, criteriaBuilder) -> 
+			criteriaBuilder.like(root.get("name"), name);
+		}
+		
 	}
 
 }
