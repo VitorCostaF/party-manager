@@ -48,4 +48,10 @@ public class Decoration implements DomainObjetctInterface {
 	@ManyToOne(optional = false, fetch = FetchType.LAZY)
 	private Company company;
 	
+	@ManyToMany
+	@JoinTable(name = "decoration_advantage", 
+		joinColumns = @JoinColumn(name = "decoration_id"),
+		inverseJoinColumns = @JoinColumn(name = "advantage_id"))
+	private List<Advantage> advantages = new ArrayList<>();
+	
 }
