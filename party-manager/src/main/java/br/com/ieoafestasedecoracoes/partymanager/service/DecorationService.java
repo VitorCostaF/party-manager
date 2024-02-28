@@ -58,8 +58,15 @@ public class DecorationService {
 		
 	}
 	
-	public List<DecorationTO> findByCategory(Integer categoryId) {
-		return toDecorationTOList(repository.findByCategoriesId(categoryId));
+	public List<DecorationTO> findByCategory(Integer categoryId, Map<String,String> params) {
+		
+		Specification<Decoration> specification = Specification.where(DecorationSpecification.category(categoryId));
+		
+		for(DecorationFilter filter : filters) {
+			specification = filter.applyFilter(specification, params);
+		}
+		
+		return toDecorationTOList(repository.findAll(specification));
 	}
 	
 	public List<DecorationTO> findByCompany(Integer companyId) {

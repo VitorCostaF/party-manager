@@ -24,5 +24,6 @@ public class DecorationTO {
 	private BigDecimal discount;
 	private Integer companyId;
 	private List<CategoryTO> categories = new ArrayList<>();
+	private List<AdvantageTO> advantages = new ArrayList<>();
 	
 }

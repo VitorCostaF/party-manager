@@ -35,7 +35,12 @@ public class DecorationSpecification {
 	
 	public static Specification<Decoration> decorationDescription(String name) {
 		return (root, query, criteriaBuilder) -> 
-		criteriaBuilder.like(root.get("name"), name);
+			criteriaBuilder.like(root.get("name"), "%" + name + "%" );
+	}
+	
+	public static Specification<Decoration> category(Integer categoryId) {
+		return (root, query, criteriaBuilder) -> 
+			criteriaBuilder.equal(root.get("categories").get("id"), categoryId);
 	}
 	
 	public static Specification<Decoration> hasAdvantages(List<Integer> ids) {
